@@ -1,0 +1,38 @@
+#checkout-form {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 999;
+  margin: 10px auto;
+  max-width: 1000px;
+  right: 0;
+  width: 100%;
+}
+.merchi-tab-pane input,
+.merchi-tab-pane select {
+  width: 100%;
+}
+.merchi-tab-pane .form-group {
+  margin: 1em 0;
+}
+.merchi-tab-pane .list-inline {
+  list-style: none;
+  margin: 0;
+}
+.list-inline li {
+  display: inline;
+}
+#product-order-form input,
+#product-order-form select {
+  width: 100%;
+}
+.independent-variations .colour-select-option-container,
+.independent-variations .form-check-radio-option {
+  display: inline-block;
+}
+.independent-variations .list-inline {
+  margin: 0;
+}
+#product-order-form .form-group {
+  padding: 0.5em 0;
+}

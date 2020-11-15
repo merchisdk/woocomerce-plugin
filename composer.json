@@ -1,0 +1,21 @@
+{
+  "name": "charlie/merchi-plugin",
+  "description": "Integrate your Woocommerce store with Merchi",
+  "type": "project",
+  "license": "GPL",
+  "authors": [
+    {
+      "name": "Charlie",
+      "email": "charlows@gmail.com"
+    }
+  ],
+  "minimum-stability": "dev",
+  "require": {
+    "automattic/woocommerce": "dev-master"
+  },
+  "autoload": {
+    "psr-4": {
+      "Inc\\": "./inc"
+    }
+  }
+}

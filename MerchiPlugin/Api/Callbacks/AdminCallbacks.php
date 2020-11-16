@@ -3,9 +3,9 @@
  * @package  MerchiPlugin
  */
 
-namespace Inc\Api\Callbacks;
+namespace MerchiPlugin\Api\Callbacks;
 
-use Inc\Base\BaseController;
+use MerchiPlugin\Base\BaseController;
 
 class AdminCallbacks extends BaseController {
 

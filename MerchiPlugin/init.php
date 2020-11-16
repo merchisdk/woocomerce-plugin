@@ -3,7 +3,7 @@
  * @package MerchiPlugin
  */
 
-namespace Inc;
+namespace MerchiPlugin;
 
 final class Init {
 

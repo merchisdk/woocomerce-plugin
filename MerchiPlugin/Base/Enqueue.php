@@ -3,9 +3,9 @@
  * @package MerchiPlugin
  */
 
-namespace Inc\Base;
+namespace MerchiPlugin\Base;
 
-use \Inc\Base\BaseController;
+use \MerchiPlugin\Base\BaseController;
 
 class Enqueue extends BaseController {
 	public function register() {

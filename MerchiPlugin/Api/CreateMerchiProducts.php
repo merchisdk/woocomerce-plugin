@@ -2,9 +2,9 @@
 /**
  * @package MerchiPlugin
  */
-namespace Inc\Api;
+namespace MerchiPlugin\Api;
 
-use \Inc\Base\BaseController;
+use \MerchiPlugin\Base\BaseController;
 use Automattic\WooCommerce\Client;
 use Automattic\WooCommerce\HttpClient\HttpClientException;
 

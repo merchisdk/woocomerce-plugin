@@ -3,11 +3,11 @@
  * @package MerchiPlugin
  */
 
-namespace Inc\Pages;
+namespace MerchiPlugin\Pages;
 
-use Inc\Api\SettingsApi;
-use Inc\base\BaseController;
-use Inc\Api\Callbacks\AdminCallbacks;
+use MerchiPlugin\Api\SettingsApi;
+use MerchiPlugin\base\BaseController;
+use MerchiPlugin\Api\Callbacks\AdminCallbacks;
 
 class Admin extends BaseController {
 

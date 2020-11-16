@@ -3,7 +3,7 @@
  * @package  MerchiPlugin
  */
 
-namespace Inc\Api;
+namespace MerchiPlugin\Api;
 
 class SettingsApi {
 

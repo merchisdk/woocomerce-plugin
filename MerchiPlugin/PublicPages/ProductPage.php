@@ -3,9 +3,9 @@
  * @package MerchiPlugin
  */
 
-namespace Inc\PublicPages;
+namespace MerchiPlugin\PublicPages;
 
-use \Inc\Base\BaseController;
+use \MerchiPlugin\Base\BaseController;
 
 class ProductPage extends BaseController {
 

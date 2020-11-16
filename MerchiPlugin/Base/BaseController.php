@@ -3,7 +3,7 @@
  * @package MerchiPlugin
  */
 
-namespace Inc\Base;
+namespace MerchiPlugin\Base;
 
 class BaseController {
 

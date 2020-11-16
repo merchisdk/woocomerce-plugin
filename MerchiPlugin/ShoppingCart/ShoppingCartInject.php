@@ -3,9 +3,9 @@
  * @package MerchiPlugin
  */
 
-namespace Inc\ShoppingCart;
+namespace MerchiPlugin\ShoppingCart;
 
-use \Inc\Base\BaseController;
+use \MerchiPlugin\Base\BaseController;
 
 class ShoppingCartInject extends BaseController {
 

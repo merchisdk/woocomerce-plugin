@@ -9,12 +9,12 @@ use \Inc\Base\BaseController;
 
 class Enqueue extends BaseController {
 	public function register() {
-		add_action( 'wp_enqueue_scripts', [ $this, 'enqueue' ] );
+		add_action( 'wp_enqueue_scripts', [ $this, 'do_enqueue' ] );
 		add_action( 'admin_enqueue_scripts', [ $this, 'admin_enqueue' ] );
 	}
 
 
-	public function __construct() {
+	public function do_enqueue() {
 		wp_enqueue_style( 'styles', $this->plugin_url . 'assets/merchi_styles.css' );
 		wp_enqueue_script( 'scripts', $this->plugin_url . 'assets/scripts.js' );
 		$mount_point = get_option( 'merchi_mount_point_id' );

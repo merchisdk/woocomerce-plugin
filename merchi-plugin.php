@@ -23,16 +23,21 @@ if (file_exists( dirname( __FILE__ ) . '/vendor/autoload.php' )) {
 
 // Code that runs on activation.
 function activate_merchi_plugin() {
-	Inc\Base\Activate::activate();
+	$my_account = get_page_by_path( 'my-account' );
+	if (isset( $my_account )) {
+			   wp_delete_post( $my_account->ID );
+	}
+
+			  flush_rewrite_rules();
 
 }
 
 
 register_activation_hook( __FILE__, 'activate_merchi_plugin' );
 
-// Code that runs on deactivation.
+
 function deactivate_merchi_plugin() {
-	Inc\Base\Deactivate::deactivate();
+	flush_rewrite_rules();
 
 }
 

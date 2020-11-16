@@ -6,7 +6,7 @@
 namespace Inc\Pages;
 
 use Inc\Api\SettingsApi;
-use Inc\Base\BaseController;
+use Inc\base\BaseController;
 use Inc\Api\Callbacks\AdminCallbacks;
 
 class Admin extends BaseController {

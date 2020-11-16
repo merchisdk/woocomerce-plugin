@@ -1,3 +1,4 @@
+<?php declare(strict_types=1); ?>
 <script type="text/javascript" src="https://merchi.co/static/js/dist/merchi-init.js"></script>
 <script>
   window.MERCHI_SDK = MERCHI_INIT.MERCHI_SDK;
@@ -8,10 +9,10 @@
   <?php settings_errors(); ?>
 
   <form action="options.php" method="post">
-    <?php 
+	<?php
 			settings_fields( 'merchi_options_group' );
 			do_settings_sections( 'merchi_plugin' );
 			submit_button( 'Save Settings' );
-		?>
+	?>
   </form>
 </div>

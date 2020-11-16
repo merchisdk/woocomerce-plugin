@@ -1,13 +1,12 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * @package MerchiPlugin
  */
 
 namespace Inc\Base;
 
-class Deactivate
-{
-    public static function deactivate() {
-        flush_rewrite_rules();
-    }
+class Deactivate {
+	public function __construct() {
+		flush_rewrite_rules();
+	}
 }

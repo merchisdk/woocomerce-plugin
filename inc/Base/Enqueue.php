@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * @package MerchiPlugin
  */
@@ -7,29 +7,37 @@ namespace Inc\Base;
 
 use \Inc\Base\BaseController;
 
-class Enqueue extends BaseController
-{
-    public function register() {
-        add_action( 'wp_enqueue_scripts', array( $this, 'enqueue') );
-        add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue') );
-    }
-    
-    public function enqueue() {
-        wp_enqueue_style( 'styles',  $this->plugin_url . 'assets/merchi_styles.css' );
-        wp_enqueue_script( 'scripts',  $this->plugin_url . 'assets/scripts.js' );
-        $mountPoint = get_option("merchi_mount_point_id");
-        $css = ".$mountPoint {visibility: hidden;}";
-        wp_add_inline_style( 'styles', $css );
-    }
+class Enqueue extends BaseController {
+	public function register() {
+		add_action( 'wp_enqueue_scripts', [ $this, 'enqueue' ] );
+		add_action( 'admin_enqueue_scripts', [ $this, 'admin_enqueue' ] );
+	}
 
-    public function admin_enqueue() {
-        $merchi_plugin_object = array(
-            'merchiStoreName' => get_option('merchi_url')
-        );
 
-        wp_enqueue_script('merchi_plugin_val',  $this->plugin_url . 'assets/scripts.js' );
-        wp_localize_script('merchi_plugin_val', 'merchiObject', $merchi_plugin_object);
-        wp_enqueue_script( 'ajax_script',  $this->plugin_url . 'assets/create_merchi_products.js', array('jquery') );
-        wp_localize_script( 'ajax_script', 'create_merchi_products', array( 'ajax_url' => admin_url('admin-ajax.php'), 'check_nonce' => wp_create_nonce('merchi-nonce') ) );
-    }
+	public function __construct() {
+		wp_enqueue_style( 'styles', $this->plugin_url . 'assets/merchi_styles.css' );
+		wp_enqueue_script( 'scripts', $this->plugin_url . 'assets/scripts.js' );
+		$mount_point = get_option( 'merchi_mount_point_id' );
+		$css         = ".$mount_point {visibility: hidden;}";
+		wp_add_inline_style( 'styles', $css );
+	}
+
+
+	public function admin_enqueue() {
+		$merchi_plugin_object = [
+			'merchiStoreName' => get_option( 'merchi_url' ),
+		];
+
+		wp_enqueue_script( 'merchi_plugin_val', $this->plugin_url . 'assets/scripts.js' );
+		wp_localize_script( 'merchi_plugin_val', 'merchiObject', $merchi_plugin_object );
+		wp_enqueue_script( 'ajax_script', $this->plugin_url . 'assets/create_merchi_products.js', [ 'jquery' ] );
+		wp_localize_script(
+			'ajax_script',
+			'create_merchi_products',
+			[
+				'ajax_url'    => admin_url( 'admin-ajax.php' ),
+				'check_nonce' => wp_create_nonce( 'merchi-nonce' ),
+			]
+		);
+	}
 }

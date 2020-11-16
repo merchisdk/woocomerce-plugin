@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
-<ruleset name="Pivotal Agency">
-    <description>Pivotal Wordpress Coding Standards</description>
+<ruleset name="merchi">
+    <description>merchi</description>
 
     <!-- Scan all files in directory -->
     <file>.</file>
@@ -19,6 +19,7 @@
     <!-- Include the WordPress-Extra standard. -->
     <rule ref="WordPress-Extra">
         <exclude name="WordPress.PHP.DisallowShortTernary"/>
+        <exclude name="WordPress.Files.FileName.NotHyphenatedLowercase"/>
         <exclude name="WordPress.NamingConventions.ValidFunctionName.MethodNameInvalid"/>
         <exclude name="WordPress.Files.FileName.InvalidClassFileName"/>
         <exclude name="WordPress.WhiteSpace.ControlStructureSpacing.NoSpaceBeforeCloseParenthesis"/>
@@ -77,6 +78,7 @@
       <exclude name="Generic.Functions.OpeningFunctionBraceKernighanRitchie" />
       <exclude name="Generic.Commenting.DocComment.MissingShort" />
       <exclude name="Generic.PHP.UpperCaseConstant.Found" />
+      <exclude name="Generic.Files.LowercasedFilename.NotFound" />
     </rule>
     <rule ref="Generic.CodeAnalysis.UnusedFunctionParameter"/>
     <rule ref="Generic.Commenting.Todo"/>

@@ -22,9 +22,14 @@ class ProductPage extends BaseController {
 		global $product;
 		// SKU used as Merchi ID. We are checking to see if Merchi ID exists. If so fetch Merchi product.
 		if ($product->get_sku() !== '') {
-			$id      = $product->get_sku();
-			$content = '<script type="text/javascript" data-name="product-embed" src="https://merchi.co//static/product_embed/js/product.embed.js?product=' . $id . '&hidePreview=true&hideTitle=true&hideInfo=true&hidePrice=true&includeBootstrap=false&singleColumn=true"></script>';
-			echo $content;
+			$id        = $product->get_sku();
+			$container = 'product-' . strval( $product->get_id() );
+			wp_enqueue_script( 'show_merchi_product', $this->plugin_url . 'assets/show_product.js' );
+			$script_data = [
+				'mountPointId' => $container,
+				'productId'    => $id,
+			];
+			wp_localize_script( 'show_merchi_product', 'merchiShowProductScriptOptions', $script_data );
 		} else {
 			echo 'Merchi product not found.';
 		}

@@ -20,10 +20,31 @@ class Enqueue extends BaseController {
 		$mount_point = get_option( 'merchi_mount_point_id' );
 		$css         = ".$mount_point {visibility: hidden;}";
 		wp_add_inline_style( 'styles', $css );
+		wp_enqueue_script(
+			'merchi_init',
+			'https://merchi.co/static/js/dist/merchi-init.js',
+			$ver = null
+		);
+				wp_enqueue_script(
+					'merchi_sdk',
+					$this->plugin_url . 'assets/merchi_sdk.js',
+					[ 'merchi_init' ]
+				);
+
 	}
 
 
 	public function admin_enqueue() {
+				wp_enqueue_script(
+					'merchi_init',
+					'https://merchi.co/static/js/dist/merchi-init.js',
+					$ver = null
+				);
+				wp_enqueue_script(
+					'merchi_sdk',
+					$this->plugin_url . 'assets/merchi_sdk.js',
+					[ 'merchi_init' ]
+				);
 		$merchi_plugin_object = [
 			'merchiStoreName' => get_option( 'merchi_url' ),
 		];

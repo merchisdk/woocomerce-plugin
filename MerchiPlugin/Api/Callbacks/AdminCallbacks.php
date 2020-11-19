@@ -30,6 +30,7 @@ class AdminCallbacks extends BaseController {
 	}
 
 
+	// phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped
 	public function merchiStoreUrl() {
 		$value = esc_attr( get_option( 'merchi_url' ) );
 		echo '<input type="text" class="regular-text" name="merchi_url" value="' . $value . '" placeholder="00">';
@@ -52,4 +53,7 @@ class AdminCallbacks extends BaseController {
 		$value = esc_attr( get_option( 'merchi_mount_point_id' ) );
 		echo '<input type="text" class="regular-text" name="merchi_mount_point_id" value="' . $value . '" placeholder="example_class">';
 	}
+
+
+	// phpcs:enable
 }

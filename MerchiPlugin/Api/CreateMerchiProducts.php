@@ -17,7 +17,7 @@ class CreateMerchiProducts extends BaseController {
 
 
 	public function create_merchi_products() {
-		$woocommerce = new Client(
+		$woocommerce  = new Client(
 			get_option( 'siteurl' ),
 			get_option( 'woo_k_p' ),
 			get_option( 'woo_k_s' ),
@@ -29,45 +29,57 @@ class CreateMerchiProducts extends BaseController {
 				'ssl_verify'   => false,
 			]
 		);
-                $data = $_POST['products'];
-                if (is_null($data)) {
-                  wp_send_json_error(['error' => 'missing product data']);
-                }
-                $validated_data = [];
-                foreach($data["create"] as $product) {
-                  if (!array_key_exists("description", $product)) {
-                    wp_send_json_error(['error' => 'missing description']);
-                  }
-                  $description = $product["description"];
-                  if (!array_key_exists("price", $product)) {
-                    wp_send_json_error(['error' => 'missing price']);
-                  }
-                  $price = $product["price"];
-                  if (!array_key_exists("name", $product)) {
-                    wp_send_json_error(['error' => 'missing name']);
-                  }
-                  $name = $product["name"];
-                  if (!array_key_exists("regular_price", $product)) {
-                    wp_send_json_error(['error' => 'missing regular_price']);
-                  }
-                  $regular_price = $product["regular_price"];
-                  if (!array_key_exists("sku", $product)) {
-                    wp_send_json_error(['error' => 'missing sku']);
-                  }
-                  $sku = $product["sku"];
-                  array_push($validated_data,
-                             ["description" => $description,
-                              "price" => $price,
-                              "name" => $name,
-                              "regular_price" => $regular_price,
-                              "sku" => $sku]);
-                }
-                $command = ["create" => $validated_data];
+				$data = $_POST['products'];
+		if (is_null( $data )) {
+			wp_send_json_error( [ 'error' => 'missing product data' ] );
+		}
+
+				$validated_data = [];
+		foreach ($data['create'] as $product) {
+			if (!array_key_exists( 'description', $product )) {
+					wp_send_json_error( [ 'error' => 'missing description' ] );
+			}
+
+					$description = $product['description'];
+			if (!array_key_exists( 'price', $product )) {
+				wp_send_json_error( [ 'error' => 'missing price' ] );
+			}
+
+					$price = $product['price'];
+			if (!array_key_exists( 'name', $product )) {
+				wp_send_json_error( [ 'error' => 'missing name' ] );
+			}
+
+					$name = $product['name'];
+			if (!array_key_exists( 'regular_price', $product )) {
+				wp_send_json_error( [ 'error' => 'missing regular_price' ] );
+			}
+
+					$regular_price = $product['regular_price'];
+			if (!array_key_exists( 'sku', $product )) {
+				wp_send_json_error( [ 'error' => 'missing sku' ] );
+			}
+
+					$sku = $product['sku'];
+					array_push(
+						$validated_data,
+						[
+							'description'   => $description,
+							'price'         => $price,
+							'name'          => $name,
+							'regular_price' => $regular_price,
+							'sku'           => $sku,
+						]
+					);
+		}//end foreach
+
+				$command = [ 'create' => $validated_data ];
 		try {
 			$woocommerce->post( 'products/batch', $command );
 		} catch (HttpClientException $e) {
 			echo esc_html( $e );
 		}
-                wp_die();
+
+				wp_die();
 	}
 }

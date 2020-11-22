@@ -3,7 +3,7 @@
  * Plugin Name:       Merchi Plugin
  * Plugin URI:        https://merchi.co
  * Description:       Fetch your products from Merchi. This plugin requires Woocommerce.
- * Version:           1.1
+ * Version:           1.2
  * Author:            Charlie Campton
  * License:           GPL v2 or later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
@@ -45,6 +45,7 @@ function deactivate_merchi_plugin() {
 register_activation_hook( __FILE__, 'deactivate_merchi_plugin' );
 
 // Initialise all core classes of the plugin.
+require_once( "MerchiPlugin/init.php" );
 if (class_exists( 'MerchiPlugin\\Init' )) {
 	MerchiPlugin\Init::register_services();
 }

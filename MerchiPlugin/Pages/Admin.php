@@ -6,7 +6,7 @@
 namespace MerchiPlugin\Pages;
 
 use MerchiPlugin\Api\SettingsApi;
-use MerchiPlugin\base\BaseController;
+use MerchiPlugin\Base\BaseController;
 use MerchiPlugin\Api\Callbacks\AdminCallbacks;
 
 class Admin extends BaseController {

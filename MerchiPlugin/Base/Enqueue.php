@@ -49,6 +49,7 @@ class Enqueue extends BaseController {
 			'merchiStoreName' => get_option( 'merchi_url' ),
 		];
 
+		wp_enqueue_style( 'styles',  $this->plugin_url . 'assets/merchi_styles_admin.css' );
 		wp_enqueue_script( 'merchi_plugin_val', $this->plugin_url . 'assets/scripts.js' );
 		wp_localize_script( 'merchi_plugin_val', 'merchiObject', $merchi_plugin_object );
 		wp_enqueue_script( 'ajax_script', $this->plugin_url . 'assets/create_merchi_products.js', [ 'jquery' ] );

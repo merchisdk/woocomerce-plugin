@@ -1,4 +1,6 @@
 jQuery(document).ready(function ($) {
+  var available = 0;
+  var totalAvailable = 0;
   var embed = {
     featureImage: {},
     images: {},
@@ -26,7 +28,10 @@ jQuery(document).ready(function ($) {
 
   function convertedMerchiProducts(products) {
     var _products = [],
-      i;
+      i,
+      j,
+      arraySize = 6,
+      arrayOfProductArrays = [];
     if (products) {
       for (i = 0; i < products.length; i++) {
         var merchiProduct = products[i],
@@ -44,51 +49,116 @@ jQuery(document).ready(function ($) {
         }
       }
     }
-    return { create: _products };
+    // for (j = 0; j < _products.length; j += arraySize) {
+    //   arrayOfProductArrays.push(_products.slice(j, j + arraySize));
+    // }
+    return _products;
   }
 
-  async function addProductsToDatabase(data) {
-    // on fetch merchi products success pass them to the
-    // "create_merchi_products" endpoint so that they can be saved
-    // into the products table
-    var products = data,
-      meta = data.meta,
-      msgName = meta.available === 1 ? "product" : "products",
-      msg = `${meta.available} Merchi ${msgName} have been fetched and saved into products.`,
-      _products = await convertedMerchiProducts(products);
+  function injectProductsIntoDB(products, offset) {
+    var msg = `Merchi products have been fetched and saved into products.`;
     $.ajax({
       type: "post",
       url: create_merchi_products.ajax_url,
       data: {
         action: "create_merchi_products",
-        products: _products,
+        products: products,
         _ajax_nonce: create_merchi_products.nonce,
       },
-      success: function (data) {
-        alert(msg);
-        $("#merchi-fetch-button").html("Fetch");
-        $("#merchi-fetch-button").prop("disabled", false);
+      success: function (_data) {
+        // console.log(_data);
+        available -= 6;
+        // console.log("available", available);
+        $("#merchi-progress").val((1 - available / totalAvailable) * 100);
+        // console.log("total available:", totalAvailable);
+        if (available > 0) {
+          fetchProducts(offset + 6);
+        } else {
+          $("#merchi-fetch-button").html("Fetch");
+          $("#merchi-fetch-button").prop("disabled", false);
+          $("#merchi-progress").val(0);
+          toast();
+        }
+        return;
       },
       error: function (MLHttpRequest, textStatus, errorThrown) {
-        console.log(errorThrown);
+        console.error(errorThrown);
+        $("#merchi-fetch-button").html("Fetch");
+        $("#merchi-fetch-button").prop("disabled", false);
+        $("#merchi-progress").val(0);
+        return;
       },
     });
   }
 
-  function fetchProductError(data, code) {
+  async function addProductsToDatabase(data, offset) {
+    // on fetch merchi products success pass them to the
+    // "create_merchi_products" endpoint so that they can be saved
+    // into the products table
+    var _products = await convertedMerchiProducts(data);
+    injectProductsIntoDB({ create: _products }, offset);
+  }
+
+  function fetchProductError(data, offset) {
     alert(
       "There was an error fetching products from Merchi" +
         "Please check the console for more info."
     );
-    console.error(data, code);
+    console.error(data, offset);
+  }
+
+  function fetchProducts(offset) {
+    var limit = 6;
+    MERCHI_SDK.products.get(
+      function (data) {
+        // console.log(data);
+        addProductsToDatabase(data, offset);
+      },
+      fetchProductError,
+      {
+        embed: embed,
+        inDomain: merchiObject.merchiStoreName,
+        limit: limit,
+        offset: offset,
+        publicOnly: true,
+      }
+    );
   }
 
   $("#merchi-fetch-button").click(function () {
     $("#merchi-fetch-button").html("Fetching...");
     $("#merchi-fetch-button").prop("disabled", true);
-    MERCHI_SDK.products.get(addProductsToDatabase, fetchProductError, {
-      embed: embed,
-      inDomain: merchiObject.merchiStoreName,
-    });
+    // Check how many merchi product there are
+    MERCHI_SDK.products.get(
+      function (data) {
+        // console.log(data, " in first");
+        available = data.meta.available;
+        totalAvailable = data.meta.available;
+        fetchProducts(0);
+      },
+      function (status, data) {
+        console.error(status, data);
+        alert("Can not connect to merchi check console.");
+      },
+      {
+        embed: {},
+        inDomain: merchiObject.merchiStoreName,
+        publicOnly: true,
+      }
+    );
   });
+
+  // Show toast
+  function toast() {
+    // Get the snackbar DIV
+    var x = document.getElementById("snackbar");
+    // Set text inside snackbar DIV
+    $("#snackbar").text(totalAvailable + " Merchi products added.");
+    // Add the "show" class to DIV
+    x.className = "show";
+    // After 3 seconds, remove the show class from DIV
+    setTimeout(function () {
+      x.className = x.className.replace("show", "");
+    }, 3000);
+  }
 });

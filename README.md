@@ -1,5 +1,20 @@
 # merchi-wordpress-plugin
 
+<h3>Description</h3>
+<p>The Merchi Plugin integrates with Woocommerce to pull your Merchi products into your Woocommerce store. It also provides access to the merchi shopping cart
+feature, if enabled.
+</p><p>
+Note that This plugin requires Woocommerce to work. It also requires an
+account on https://merchi.co/. The plugin uses the merchi API as a third party
+service to integrate merchi products with Woocomerce. The merchi privacy policy
+may be found here: https://merchi.co/privacy-policy/.
+</p><p>
+Upon activation, Merchi will disable some core Woocommerce functionlity, i.e., the ability to add products to cart and checkout. Instead we use the Merchi cart to fulfill these use cases.
+</p><p>
+For support you can contact me at: charlowspam@gmail.com
+</p><p>
+Merchi is available in English only at this time.
+</p>
 <h3>Usage</h3>
 <p>Make Merchi compatible with your favourite Woocommerce themes! The Merchi plugin will import all of your Merchi products into Woocommerce. <em>Note: This plugin will deactivate some of the Woocommerce core functionality. It is not compatible with the Woocommerce shopping cart or checkout. I.e., you cannot sell Merchi products in combination with traditional Woocommerce products.</em></p>
 </br>
@@ -32,7 +47,7 @@
 <img src="https://user-images.githubusercontent.com/7565117/86319335-a8f54d80-bc77-11ea-96aa-f83ce936e10b.png" />
 <h3>5b. Identify Mount point class</h3>
 <p>It's time to add a "mount point class". This can be a bit tricky if you are totally unfamiliar with web development, however I'm confident this guide can help overcome most knowledge gaps.</p> 
-<p>The mount point class is used to intialise a Merchi shopping cart to your page. The Merchi plugin takes the string you provide and looks for an element on the page with that class name to bind to. Eg., div class="<strong>shopping-dropdown</strong>" or span class="<strong>shopping-cart</strong>"; here the Merchi cart would bind to an element with the class shopping-dorpdown or shopping-cart, respectiely.</p>
+<p>The mount point class is used to intialise and render a Merchi shopping cart to your page. The Merchi plugin takes the string you provide and looks for an element on the page with that class name to render to. Eg., div class="<strong>shopping-dropdown</strong>" or span class="<strong>shopping-cart</strong>"; here the Merchi cart would mount to an element with the class shopping-dorpdown or shopping-cart, respectiely.</p>
 <p>The goal here is to identify a fairly universal element in your Woocommerce theme that renders something like a shopping cart, or a shopping cart dropdown, and hijack it. An element of this sort can usually be found in the navigation. If not, we can modify the theme to add an element with a class to mount our Merchi cart to. However, let's not worry about modifying themes yet. For the purposes of this guide let's identify an element in the <a href="https://woocommerce.com/storefront/">Storefront</a> theme built by the guys over at Automatic (the authors of Woocommerce), and hijack it to mount the Merchi cart.</p>
 <p>Go ahead and download and activate the Storefront theme on your Wordpress site. More information about installing themes can be found <a href="https://www.wpbeginner.com/beginners-guide/how-to-install-a-wordpress-theme/">here.</a></p>
 <p>Once your theme is set up, we will head over to the home page and <strong>"inspect element"</strong> on what looks to be a good candidate for our universal shopping cart element. Follow the screenshot below.</p>
@@ -44,7 +59,7 @@
 <img src="https://user-images.githubusercontent.com/7565117/86550671-6046d880-bf86-11ea-9f82-c63dcb79a27c.png" />
 <p></p>
 
-documentation tbc...
+documentation
 
 <ul>
 	<li>install merchi plugin</li>

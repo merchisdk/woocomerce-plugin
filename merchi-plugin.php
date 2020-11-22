@@ -45,7 +45,7 @@ function deactivate_merchi_plugin() {
 register_activation_hook( __FILE__, 'deactivate_merchi_plugin' );
 
 // Initialise all core classes of the plugin.
-require_once( "MerchiPlugin/init.php" );
+require_once( 'MerchiPlugin/init.php' );
 if (class_exists( 'MerchiPlugin\\Init' )) {
 	MerchiPlugin\Init::register_services();
 }

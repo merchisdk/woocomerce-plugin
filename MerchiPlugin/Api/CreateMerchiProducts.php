@@ -41,26 +41,47 @@ class CreateMerchiProducts extends BaseController {
 			}
 
 					$description = $product['description'];
+			if (!is_string( $description ) || empty( $description )) {
+				wp_send_json_error( [ 'error' => 'description must be non empty string' ] );
+			}
+
 			if (!array_key_exists( 'price', $product )) {
 				wp_send_json_error( [ 'error' => 'missing price' ] );
 			}
 
 					$price = $product['price'];
+			if (!is_string( $price ) || empty( $price )) {
+				wp_send_json_error( [ 'error' => 'price must be non empty string' ] );
+			}
+
 			if (!array_key_exists( 'name', $product )) {
 				wp_send_json_error( [ 'error' => 'missing name' ] );
 			}
 
 					$name = $product['name'];
+			if (!is_string( $name ) || empty( $name )) {
+				wp_send_json_error( [ 'error' => 'name must be non empty string' ] );
+			}
+
 			if (!array_key_exists( 'regular_price', $product )) {
 				wp_send_json_error( [ 'error' => 'missing regular_price' ] );
 			}
 
 					$regular_price = $product['regular_price'];
+			if (!is_string( $regular_price ) || empty( $regular_price )) {
+				wp_send_json_error( [ 'error' => 'regular_price must be non empty string' ] );
+			}
+
 			if (!array_key_exists( 'sku', $product )) {
 				wp_send_json_error( [ 'error' => 'missing sku' ] );
 			}
 
 					$sku = $product['sku'];
+
+			if (!is_string( $sku ) || empty( $sku )) {
+				wp_send_json_error( [ 'error' => 'sku must be non empty string' ] );
+			}
+
 					array_push(
 						$validated_data,
 						[

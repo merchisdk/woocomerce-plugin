@@ -85,11 +85,11 @@ class CreateMerchiProducts extends BaseController {
 					array_push(
 						$validated_data,
 						[
-							'description'   => $description,
-							'price'         => $price,
-							'name'          => $name,
-							'regular_price' => $regular_price,
-							'sku'           => $sku,
+							'description'   => sanitize_textarea_field($description),
+							'price'         => sanitize_text_field($price),
+							'name'          => sanitize_text_field($name),
+							'regular_price' => sanitize_text_field($regular_price),
+							'sku'           => sanitize_text_field($sku),
 						]
 					);
 		}//end foreach

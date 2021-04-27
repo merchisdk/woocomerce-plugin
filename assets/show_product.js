@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
   const redirectAfterSuccessUrl = merchiShowProductScriptOptions.redirectAfterSuccessUrl;
   const mountpoint = document.getElementById(mountPointId);
   const script = document.createElement('script');
-  script.src = `https://merchi.co//static/product_embed/js/product.embed.js?product=${productId}&hidePreview=true&hideTitle=true&hideInfo=true&hidePrice=true&includeBootstrap=false&singleColumn=true&notIncludeDefaultCss=true&redirectAfterSuccessUrl=${redirectAfterSuccessUrl}"`;
+  script.src = `https://merchi.co//static/product_embed/js/product.embed.js?product=${productId}&hidePreview=true&hideTitle=true&hideInfo=true&hidePrice=true&includeBootstrap=false&singleColumn=true&notIncludeDefaultCss=true&redirectAfterSuccessUrl=${redirectAfterSuccessUrl}`;
   script.dataset.name = "product-embed";
   mountpoint.appendChild(script);
 });

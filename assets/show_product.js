@@ -1,10 +1,10 @@
 document.addEventListener('DOMContentLoaded', function(event) {
-  const mountPointId = merchiShowProductScriptOptions.mountPointId;
   const productId = merchiShowProductScriptOptions.productId;
   const redirectAfterSuccessUrl = merchiShowProductScriptOptions.redirectAfterSuccessUrl;
-  const mountpoint = document.getElementById(mountPointId);
+  const mountpointClassName = merchiShowProductScriptOptions.mountPointClassName;
+  const mountpoint = document.getElementsByClassName(mountpointClassName);
   const script = document.createElement('script');
   script.src = `https://merchi.co//static/product_embed/js/product.embed.js?product=${productId}&hidePreview=true&hideTitle=true&hideInfo=true&hidePrice=true&includeBootstrap=false&singleColumn=true&notIncludeDefaultCss=true&redirectAfterSuccessUrl=${redirectAfterSuccessUrl}`;
   script.dataset.name = "product-embed";
-  mountpoint.appendChild(script);
+  mountpoint[0].appendChild(script);
 });

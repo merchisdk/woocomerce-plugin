@@ -91,7 +91,7 @@ class Admin extends BaseController {
 					 'merchiOptionsGroup',
 				 ],
 			 ],
-                         [
+            [
 				 'option_group' => 'merchi_options_group',
 				 'option_name'  => 'merchi_redirect_url',
 				 'callback'     => [
@@ -99,6 +99,14 @@ class Admin extends BaseController {
 					 'merchiOptionsGroup',
 				 ],
 			 ],
+			 [
+				'option_group' => 'merchi_options_group',
+				'option_name'  => 'merchi_product_mount_point_class',
+				'callback'     => [
+					$this->callbacks,
+					'merchiOptionsGroup',
+				],
+			],
 			 [
 				 'option_group' => 'merchi_options_group',
 				 'option_name'  => 'woo_k_s',
@@ -179,6 +187,20 @@ class Admin extends BaseController {
 				'section'  => 'merchi_admin_index',
 				'args'     => [
 					'label_for' => 'merchi_redirect_url',
+					'class'     => 'example-class',
+				],
+			],
+			[
+				'id'       => 'merchi_product_mount_point_class',
+				'title'    => 'Element class name where Merchi product will render',
+				'callback' => [
+					$this->callbacks,
+					'merchiProductMountPointClass'
+				],
+				'page'     => 'merchi_plugin',
+				'section'  => 'merchi_admin_index',
+				'args'     => [
+					'label_for' => 'merchi_product_mount_point_class',
 					'class'     => 'example-class',
 				],
 			],

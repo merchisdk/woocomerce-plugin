@@ -21,6 +21,7 @@ final class Init {
 			Base\Enqueue::class,
 			Base\SettingsLinks::class,
 			Api\CreateMerchiProducts::class,
+			Api\ExportProducts::class,
 		];
 	}
 

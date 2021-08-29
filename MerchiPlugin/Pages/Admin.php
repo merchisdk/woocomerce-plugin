@@ -60,8 +60,8 @@ class Admin extends BaseController {
 		 $this->subpages = [
 			 [
 				 'parent_slug' => 'merchi_plugin',
-				 'page_title'  => 'Fetch page',
-				 'menu_title'  => 'Fetch',
+				 'page_title'  => 'Import / Export',
+				 'menu_title'  => 'Import / Export',
 				 'capability'  => 'manage_options',
 				 'menu_slug'   => 'merchi_fetch',
 				 'callback'    => [
@@ -78,6 +78,14 @@ class Admin extends BaseController {
 			 [
 				 'option_group' => 'merchi_options_group',
 				 'option_name'  => 'merchi_url',
+				 'callback'     => [
+					 $this->callbacks,
+					 'merchiOptionsGroup',
+				 ],
+			 ],
+                         [
+				 'option_group' => 'merchi_options_group',
+				 'option_name'  => 'merchi_api_secret',
 				 'callback'     => [
 					 $this->callbacks,
 					 'merchiOptionsGroup',
@@ -151,6 +159,20 @@ class Admin extends BaseController {
 				'section'  => 'merchi_admin_index',
 				'args'     => [
 					'label_for' => 'merchi_url',
+					'class'     => 'example-class',
+				],
+			],
+                        [
+				'id'       => 'merchi_api_secret',
+				'title'    => 'Merchi API secret',
+				'callback' => [
+					$this->callbacks,
+					'merchiApiSecret',
+				],
+				'page'     => 'merchi_plugin',
+				'section'  => 'merchi_admin_index',
+				'args'     => [
+					'label_for' => 'merchi_api_secret',
 					'class'     => 'example-class',
 				],
 			],

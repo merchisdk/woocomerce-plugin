@@ -61,5 +61,15 @@ class Enqueue extends BaseController {
 				'check_nonce' => wp_create_nonce( 'merchi-nonce' ),
 			]
 		);
+		wp_enqueue_script( 'export_ajax_script', $this->plugin_url . 'assets/export_products.js', [ 'jquery' ] );
+		wp_localize_script(
+			'export_ajax_script',
+			'export_products',
+			[
+				'ajax_url'    => admin_url( 'admin-ajax.php' ),
+				'check_nonce' => wp_create_nonce( 'merchi-nonce' ),
+			]
+		);
+
 	}
 }

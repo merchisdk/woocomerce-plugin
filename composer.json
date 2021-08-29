@@ -11,7 +11,8 @@
   ],
   "minimum-stability": "dev",
   "require": {
-    "automattic/woocommerce": "dev-master"
+    "automattic/woocommerce": "dev-master",
+    "phpcsstandards/phpcsutils": "^1.0"
   },
   "autoload": {
     "psr-4": {

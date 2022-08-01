@@ -109,3 +109,15 @@ h2 {
   border: none;
   background: rgb(48, 61, 191);
 }
+
+
+/* Merchi products select table */
+.plugin-table-wrap {
+	margin-top: 40px;
+}
+.plugin-table-tr {
+	background: white;
+}
+.plugin-table-td {
+	padding: 8px 30px 8px 10px;
+}

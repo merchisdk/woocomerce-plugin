@@ -5,8 +5,8 @@
 namespace MerchiPlugin\Api;
 
 use \MerchiPlugin\Base\BaseController;
-use Automattic\WooCommerce\Client;
-use Automattic\WooCommerce\HttpClient\HttpClientException;
+// use Automattic\WooCommerce\Client;
+// use Automattic\WooCommerce\HttpClient\HttpClientException;
 
 function product_to_json($product) {
   $images = [];
@@ -44,7 +44,7 @@ class ExportProducts extends BaseController {
                 $api_secret = esc_attr( get_option( 'merchi_api_secret' ) );
                 $args = ['body' => ['data' => json_encode($result),
                                     'api_secret' => $api_secret]];
-                $merchi_url = 'https://api.merchi.co/v6/domains/import/woocommerce/';
+                $merchi_url = 'https://api.staging.merchi.co/v6/domains/import/woocommerce/';
                 $response = wp_remote_post($merchi_url, $args);
                 $status = wp_remote_retrieve_response_code($response);
                 $body = wp_remote_retrieve_body( $response );

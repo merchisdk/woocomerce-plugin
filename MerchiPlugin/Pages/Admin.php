@@ -107,22 +107,22 @@ class Admin extends BaseController {
 					 'merchiOptionsGroup',
 				 ],
 			 ],
-			 [
-				 'option_group' => 'merchi_options_group',
-				 'option_name'  => 'woo_k_s',
-				 'callback'     => [
-					 $this->callbacks,
-					 'merchiOptionsGroup',
-				 ],
-			 ],
-			 [
-				 'option_group' => 'merchi_options_group',
-				 'option_name'  => 'woo_k_p',
-				 'callback'     => [
-					 $this->callbacks,
-					 'merchiOptionsGroup',
-				 ],
-			 ],
+			 // [
+				 // 'option_group' => 'merchi_options_group',
+				 // 'option_name'  => 'woo_k_s',
+				 // 'callback'     => [
+					 // $this->callbacks,
+					 // 'merchiOptionsGroup',
+				 // ],
+			 // ],
+			 // [
+				 // 'option_group' => 'merchi_options_group',
+				 // 'option_name'  => 'woo_k_p',
+				 // 'callback'     => [
+					 // $this->callbacks,
+					 // 'merchiOptionsGroup',
+				 // ],
+			 // ],
 		 ];
 
 		 $this->settings->setSettings( $args );
@@ -204,34 +204,34 @@ class Admin extends BaseController {
 					'class'     => 'example-class',
 				],
 			],
-			[
-				'id'       => 'woo_k_p',
-				'title'    => 'Woocommerce Public Key',
-				'callback' => [
-					$this->callbacks,
-					'wooPublic',
-				],
-				'page'     => 'merchi_plugin',
-				'section'  => 'merchi_admin_index',
-				'args'     => [
-					'label_for' => 'woo_k_p',
-					'class'     => 'example-class',
-				],
-			],
-			[
-				'id'       => 'woo_k_s',
-				'title'    => 'Woocommerce Secret Key',
-				'callback' => [
-					$this->callbacks,
-					'wooSecret',
-				],
-				'page'     => 'merchi_plugin',
-				'section'  => 'merchi_admin_index',
-				'args'     => [
-					'label_for' => 'woo_k_s',
-					'class'     => 'example-class',
-				],
-			],
+			// [
+				// 'id'       => 'woo_k_p',
+				// 'title'    => 'Woocommerce Public Key',
+				// 'callback' => [
+					// $this->callbacks,
+					// 'wooPublic',
+				// ],
+				// 'page'     => 'merchi_plugin',
+				// 'section'  => 'merchi_admin_index',
+				// 'args'     => [
+					// 'label_for' => 'woo_k_p',
+					// 'class'     => 'example-class',
+				// ],
+			// ],
+			// [
+				// 'id'       => 'woo_k_s',
+				// 'title'    => 'Woocommerce Secret Key',
+				// 'callback' => [
+					// $this->callbacks,
+					// 'wooSecret',
+				// ],
+				// 'page'     => 'merchi_plugin',
+				// 'section'  => 'merchi_admin_index',
+				// 'args'     => [
+					// 'label_for' => 'woo_k_s',
+					// 'class'     => 'example-class',
+				// ],
+			// ],
 		];
 
 		$this->settings->setFields( $args );

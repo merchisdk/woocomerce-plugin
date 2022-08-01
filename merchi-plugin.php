@@ -53,3 +53,15 @@ if (class_exists( 'MerchiPlugin\\Init' )) {
 // Deactivate purchasing on woocommerce.
 add_filter( 'woocommerce_widget_cart_is_hidden', '__return_true' );
 add_filter( 'woocommerce_is_purchasable', '__return_false' );
+
+// Add mount point Class module shortcode
+add_shortcode( 'merchi_mount_point', 'merchi_mount_point' );
+function merchi_mount_point() {
+	
+	$merchi_mount_point_id = get_option( 'merchi_mount_point_id' );
+	if( $merchi_mount_point_id != '' ) {
+		
+		echo '<div class="' . $merchi_mount_point_id . '">
+		</div>';
+	}
+}

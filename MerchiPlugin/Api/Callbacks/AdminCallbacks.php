@@ -41,15 +41,15 @@ class AdminCallbacks extends BaseController {
 		echo '<input type="password" class="regular-text" name="merchi_api_secret" value="' . $value . '" placeholder="xxxxx">';
         }
 
-	public function wooSecret() {
-		$value = esc_attr( get_option( 'woo_k_s' ) );
-		echo '<input type="password" class="regular-text" name="woo_k_s" value="' . $value . '" placeholder="cs_xxxxxxxxxxxxxx">';
-	}
+	// public function wooSecret() {
+		// $value = esc_attr( get_option( 'woo_k_s' ) );
+		// echo '<input type="password" class="regular-text" name="woo_k_s" value="' . $value . '" placeholder="cs_xxxxxxxxxxxxxx">';
+	// }
 
-	public function wooPublic() {
-		$value = esc_attr( get_option( 'woo_k_p' ) );
-		echo '<input type="text" class="regular-text" name="woo_k_p" value="' . $value . '" placeholder="ck_xxxxxxxxxxxxxx">';
-	}
+	// public function wooPublic() {
+		// $value = esc_attr( get_option( 'woo_k_p' ) );
+		// echo '<input type="text" class="regular-text" name="woo_k_p" value="' . $value . '" placeholder="ck_xxxxxxxxxxxxxx">';
+	// }
 
 
 	public function merchiMountPointId() {

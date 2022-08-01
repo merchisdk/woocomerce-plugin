@@ -22,7 +22,7 @@ class Enqueue extends BaseController {
 		wp_add_inline_style( 'styles', $css );
 		wp_enqueue_script(
 			'merchi_init',
-			'https://merchi.co/static/js/dist/merchi-init.js',
+			'https://staging.merchi.co/static/js/dist/merchi-init.js',
 			$ver = null
 		);
 				wp_enqueue_script(
@@ -37,7 +37,7 @@ class Enqueue extends BaseController {
 	public function admin_enqueue() {
 				wp_enqueue_script(
 					'merchi_init',
-					'https://merchi.co/static/js/dist/merchi-init.js',
+					'https://staging.merchi.co/static/js/dist/merchi-init.js',
 					$ver = null
 				);
 				wp_enqueue_script(

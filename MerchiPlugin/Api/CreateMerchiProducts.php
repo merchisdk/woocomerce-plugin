@@ -146,6 +146,7 @@ class CreateMerchiProducts extends BaseController {
 			}
 			
 			$attachment_ids = array();
+			$thumbnail = 0;
 			
 			if(
 				isset( $merchi_product['images'] )
@@ -157,7 +158,7 @@ class CreateMerchiProducts extends BaseController {
 					
 					if( $attachment_id = $this->attache_image( $wc_product_id, $merchi_image['src'] ) ) {
 					
-						if( !isset( $thumbnail ) ) {
+						if( !isset( $thumbnail ) || !$thumbnail ) {
 							
 							$thumbnail = $attachment_id;
 						}
@@ -185,7 +186,7 @@ class CreateMerchiProducts extends BaseController {
 			$wc_product->set_regular_price( $regular_price );
 			$wc_product->set_gallery_image_ids( $attachment_ids );
 			
-			if( isset( $thumbnail ) ) {
+			if( isset( $thumbnail ) && $thumbnail ) {
 				
 				$wc_product->set_image_id( $thumbnail );
 			}

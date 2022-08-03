@@ -93,13 +93,29 @@ class Admin extends BaseController {
 			 ],
 			 [
 				 'option_group' => 'merchi_options_group',
+				 'option_name'  => 'staging_merchi_url',
+				 'callback'     => [
+					 $this->callbacks,
+					 'stagingMerchiOptionsGroup',
+				 ],
+			 ],
+			 [
+				 'option_group' => 'merchi_options_group',
+				 'option_name'  => 'staging_merchi_api_secret',
+				 'callback'     => [
+					 $this->callbacks,
+					 'stagingMerchiOptionsGroup',
+				 ],
+			 ],
+			 [
+				 'option_group' => 'merchi_options_group',
 				 'option_name'  => 'merchi_mount_point_id',
 				 'callback'     => [
 					 $this->callbacks,
 					 'merchiOptionsGroup',
 				 ],
 			 ],
-                         [
+             [
 				 'option_group' => 'merchi_options_group',
 				 'option_name'  => 'merchi_redirect_url',
 				 'callback'     => [
@@ -123,6 +139,14 @@ class Admin extends BaseController {
 					 // 'merchiOptionsGroup',
 				 // ],
 			 // ],
+			 [
+				 'option_group' => 'merchi_options_group',
+				 'option_name'  => 'merchi_staging_mode',
+				 'callback'     => [
+					 $this->callbacks,
+					 'merchiOptionsGroup',
+				 ],
+			 ],
 		 ];
 
 		 $this->settings->setSettings( $args );
@@ -173,6 +197,34 @@ class Admin extends BaseController {
 				'section'  => 'merchi_admin_index',
 				'args'     => [
 					'label_for' => 'merchi_api_secret',
+					'class'     => 'example-class',
+				],
+			],
+			[
+				'id'       => 'staging_merchi_url',
+				'title'    => 'Staging Merchi URL',
+				'callback' => [
+					$this->callbacks,
+					'stagingMerchiStoreUrl',
+				],
+				'page'     => 'merchi_plugin',
+				'section'  => 'merchi_admin_index',
+				'args'     => [
+					'label_for' => 'staging_merchi_url',
+					'class'     => 'example-class',
+				],
+			],
+                        [
+				'id'       => 'staging_merchi_api_secret',
+				'title'    => 'Staging Merchi API secret',
+				'callback' => [
+					$this->callbacks,
+					'stagingMerchiApiSecret',
+				],
+				'page'     => 'merchi_plugin',
+				'section'  => 'merchi_admin_index',
+				'args'     => [
+					'label_for' => 'staging_merchi_api_secret',
 					'class'     => 'example-class',
 				],
 			],
@@ -232,6 +284,20 @@ class Admin extends BaseController {
 					// 'class'     => 'example-class',
 				// ],
 			// ],
+			[
+				'id'       => 'merchi_staging_mode',
+				'title'    => 'Staging mode',
+				'callback' => [
+					$this->callbacks,
+					'merchiStagingMode'
+				],
+				'page'     => 'merchi_plugin',
+				'section'  => 'merchi_admin_index',
+				'args'     => [
+					'label_for' => 'merchi_staging_mode',
+					'class'     => 'example-class',
+				],
+			],
 		];
 
 		$this->settings->setFields( $args );

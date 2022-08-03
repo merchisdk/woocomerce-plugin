@@ -16,6 +16,12 @@ class AdminCallbacks extends BaseController {
 
 
 	public function adminCpt() {
+		if( get_option( 'merchi_staging_mode' ) == 'yes' ) {
+			$merchi_url = 'https://api.staging.merchi.co/';
+		}
+		else {
+			$merchi_url = 'https://api.merchi.co/';
+		}
 		return require_once( "$this->plugin_path/templates/cpt.php" );
 	}
 
@@ -36,10 +42,20 @@ class AdminCallbacks extends BaseController {
 		echo '<input type="text" class="regular-text" name="merchi_url" value="' . $value . '" placeholder="00">';
 	}
 
-        public function merchiApiSecret() {
+	public function merchiApiSecret() {
 		$value = esc_attr( get_option( 'merchi_api_secret' ) );
 		echo '<input type="password" class="regular-text" name="merchi_api_secret" value="' . $value . '" placeholder="xxxxx">';
-        }
+	}
+
+	public function stagingMerchiStoreUrl() {
+		$value = esc_attr( get_option( 'staging_merchi_url' ) );
+		echo '<input type="text" class="regular-text" name="staging_merchi_url" value="' . $value . '" placeholder="00">';
+	}
+
+	public function stagingMerchiApiSecret() {
+		$value = esc_attr( get_option( 'staging_merchi_api_secret' ) );
+		echo '<input type="password" class="regular-text" name="staging_merchi_api_secret" value="' . $value . '" placeholder="xxxxx">';
+	}
 
 	// public function wooSecret() {
 		// $value = esc_attr( get_option( 'woo_k_s' ) );
@@ -62,7 +78,10 @@ class AdminCallbacks extends BaseController {
 		echo '<input type="text" class="regular-text" name="merchi_redirect_url" value="' . $value . '" placeholder="https://example.com/success">';
 	}
 
-
+	public function merchiStagingMode() {
+		$value = esc_attr( get_option( 'merchi_staging_mode' ) );
+		echo '<input type="checkbox" name="merchi_staging_mode" value="yes" ' . checked( $value, "yes", false ) . '><span style="margin-left: 10px;">Yes/No</span>';
+	}
 
 	// phpcs:enable
 }

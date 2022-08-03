@@ -45,8 +45,14 @@ class Enqueue extends BaseController {
 					$this->plugin_url . 'assets/merchi_sdk.js',
 					[ 'merchi_init' ]
 				);
+		if( get_option( 'merchi_staging_mode' ) == 'yes' ) {
+			$merchi_url = get_option( 'staging_merchi_url' );
+		}
+		else {
+			$merchi_url = get_option( 'merchi_url' );
+		}
 		$merchi_plugin_object = [
-			'merchiStoreName' => get_option( 'merchi_url' ),
+			'merchiStoreName' => $merchi_url,
 		];
 
 		wp_enqueue_style( 'styles',  $this->plugin_url . 'assets/merchi_styles_admin.css' );

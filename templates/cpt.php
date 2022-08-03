@@ -8,6 +8,7 @@
       <div>
           <progress id="merchi-progress" max="100" value="0"> </progress>
       </div>
+      <input type="hidden" id="merchi_base_url" value="<?php echo $merchi_url; ?>" />
       <button id="merchi-fetch-button" class="button button-primary" style="margin-top: 2em">
         Fetch
       </button>

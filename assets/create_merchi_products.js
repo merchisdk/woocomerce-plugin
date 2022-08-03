@@ -13,7 +13,7 @@ jQuery(document).ready(function ($) {
   };
   function downloadMerchiImageReturnData(file) {
     var mimetype = file.mimetype() ? file.mimetype() : null,
-      downloadSrc = "https://api.staging.merchi.co/v6/product-public-file/download/",
+      downloadSrc = $('#merchi_base_url').length ? $('#merchi_base_url').val() + "v6/product-public-file/download/" : "https://api.merchi.co/v6/product-public-file/download/",
       extension = mimetype ? allowedExtensions[mimetype] : null;
     return extension
       ? { src: `${downloadSrc}${file.id()}.${extension}` }
@@ -38,7 +38,7 @@ jQuery(document).ready(function ($) {
           merchiProductImages;
         if (merchiProduct.json && merchiProduct.json === "product") {
           merchiProductImages = convertMerchiProductImages(merchiProduct);
-		  console.log(merchiProductImages);
+		  // console.log(merchiProductImages);
           _products.push({
             description: merchiProduct.description(),
             price: merchiProduct.unitPrice(),
@@ -128,22 +128,22 @@ jQuery(document).ready(function ($) {
   }
   
   $("#merchi-sync-products").click(function () {
-	var skus = [];
-	var products = [];
-	$('.plugin-table .merchi_checkbox').each(function (index, checkBox) {
-		if($(checkBox).is(':checked')) {
-			skus.push($(checkBox).data('sku'));
-		}
-	});
-	$(merchiProducts.create).each(function (index, product) {
-		if($.inArray(product['sku'], skus) !== -1) {
-			products.push(product);
-		}
-	});
-	totalAvailable = products.length;
-	if( products.length > 0 ) {
-		injectProductsIntoDB({ create: products }, merchiOffset);
-	}
+    var skus = [];
+    var products = [];
+    $('.plugin-table .merchi_checkbox').each(function (index, checkBox) {
+      if($(checkBox).is(':checked')) {
+        skus.push($(checkBox).data('sku'));
+      }
+    });
+    $(merchiProducts.create).each(function (index, product) {
+      if($.inArray(product['sku'], skus) !== -1) {
+        products.push(product);
+      }
+    });
+    totalAvailable = products.length;
+    if( products.length > 0 ) {
+      injectProductsIntoDB({ create: products }, merchiOffset);
+    }
   });
 
   async function addProductsToDatabase(data, offset) {

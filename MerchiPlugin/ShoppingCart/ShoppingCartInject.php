@@ -17,10 +17,16 @@ class ShoppingCartInject extends BaseController {
 
 	public function inject_merchi_cart() {
 				wp_enqueue_script( 'merchi_cart', $this->plugin_url . 'assets/merchi_cart.js' );
-		error_log( get_option( 'merchi_url' ) );
+		if( get_option( 'merchi_staging_mode' ) == 'yes' ) {
+			$merchi_url = get_option( 'staging_merchi_url' );
+		}
+		else {
+			$merchi_url = get_option( 'merchi_url' );
+		}
+		error_log( $merchi_url );
 		$script_data = [
 			'mountPointClass' => get_option( 'merchi_mount_point_id' ),
-			'storeId'         => get_option( 'merchi_url' ),
+			'storeId'         => $merchi_url,
 		];
 		wp_localize_script( 'merchi_cart', 'merchiCartScriptOptions', $script_data );
 	}

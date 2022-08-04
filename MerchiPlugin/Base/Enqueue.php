@@ -20,37 +20,45 @@ class Enqueue extends BaseController {
 		$mount_point = get_option( 'merchi_mount_point_id' );
 		$css         = ".$mount_point {visibility: hidden;}";
 		wp_add_inline_style( 'styles', $css );
+		if( get_option( 'merchi_staging_mode' ) == 'yes' ) {
+			$merchi_init = 'https://staging.merchi.co/static/js/dist/merchi-init.js';
+		}
+		else {
+			$merchi_init = 'https://merchi.co/static/js/dist/merchi-init.js';
+		}
 		wp_enqueue_script(
 			'merchi_init',
-			'https://staging.merchi.co/static/js/dist/merchi-init.js',
+			$merchi_init,
 			$ver = null
 		);
-				wp_enqueue_script(
-					'merchi_sdk',
-					$this->plugin_url . 'assets/merchi_sdk.js',
-					[ 'merchi_init' ]
-				);
+		wp_enqueue_script(
+			'merchi_sdk',
+			$this->plugin_url . 'assets/merchi_sdk.js',
+			[ 'merchi_init' ]
+		);
 
 	}
 
 
 	public function admin_enqueue() {
-				wp_enqueue_script(
-					'merchi_init',
-					'https://staging.merchi.co/static/js/dist/merchi-init.js',
-					$ver = null
-				);
-				wp_enqueue_script(
-					'merchi_sdk',
-					$this->plugin_url . 'assets/merchi_sdk.js',
-					[ 'merchi_init' ]
-				);
 		if( get_option( 'merchi_staging_mode' ) == 'yes' ) {
 			$merchi_url = get_option( 'staging_merchi_url' );
+			$merchi_init = 'https://staging.merchi.co/static/js/dist/merchi-init.js';
 		}
 		else {
 			$merchi_url = get_option( 'merchi_url' );
+			$merchi_init = 'https://merchi.co/static/js/dist/merchi-init.js';
 		}
+		wp_enqueue_script(
+			'merchi_init',
+			$merchi_init,
+			$ver = null
+		);
+		wp_enqueue_script(
+			'merchi_sdk',
+			$this->plugin_url . 'assets/merchi_sdk.js',
+			[ 'merchi_init' ]
+		);
 		$merchi_plugin_object = [
 			'merchiStoreName' => $merchi_url,
 		];

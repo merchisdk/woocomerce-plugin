@@ -39,20 +39,23 @@ class CreateMerchiProducts extends BaseController {
 						if( (int)$product['merchi_updated'] && (int)$product['merchi_updated'] == (int)get_post_meta( $product_id, 'merchi_updated', true ) ) {
 							
 							$status = 'Up-to-date';
+							$status_id = 'up-to-date';
 						}
 						else {
 							
 							$status = 'New data';
+							$status_id = 'new-data';
 						}
 					}
 					else {
 						
 						$status = 'New product';
+						$status_id = 'new-product';
 					}
 				
 					$table_content .= '<tr class="plugin-table-tr">
 						<td class="plugin-table-td plugin-table-td-select">
-							<input type="checkbox" class="merchi_checkbox" data-sku="' . $product['sku'] . '" value="false">
+							<input type="checkbox" class="merchi_checkbox" data-sku="' . $product['sku'] . '" data-status="' . $status_id . '" value="false">
 						</td>
 						<td class="plugin-table-td plugin-table-td-name">'
 							. sanitize_text_field( $product['name'] ) .

@@ -80,7 +80,7 @@ class AdminCallbacks extends BaseController {
 
 	public function merchiStagingMode() {
 		$value = esc_attr( get_option( 'merchi_staging_mode' ) );
-		echo '<input type="checkbox" name="merchi_staging_mode" value="yes" ' . checked( $value, "yes", false ) . '><span style="margin-left: 10px;">Yes/No</span>';
+		echo '<input type="checkbox" name="merchi_staging_mode" value="yes" ' . checked( $value, "yes", false ) . '><span style="margin-left: 10px;">Staging/Prodaction</span>';
 	}
 
 	// phpcs:enable

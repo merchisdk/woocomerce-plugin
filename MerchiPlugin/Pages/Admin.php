@@ -286,7 +286,7 @@ class Admin extends BaseController {
 			// ],
 			[
 				'id'       => 'merchi_staging_mode',
-				'title'    => 'Staging mode',
+				'title'    => 'Environment',
 				'callback' => [
 					$this->callbacks,
 					'merchiStagingMode'

@@ -1,6 +1,5 @@
 jQuery(document).ready(function ($) {
   var limit = 25;
-  var available = 0;
   var totalAvailable = 0;
   var allProducts = [];
   var embed = {
@@ -13,6 +12,7 @@ jQuery(document).ready(function ($) {
     "image/jpg": "jpg",
     "image/png": "png",
   };
+  
   function downloadMerchiImageReturnData(file) {
     var mimetype = file.mimetype() ? file.mimetype() : null,
       downloadSrc = $('#merchi_base_url').length ? $('#merchi_base_url').val() + "v6/product-public-file/download/" : "https://api.merchi.co/v6/product-public-file/download/",
@@ -113,10 +113,6 @@ jQuery(document).ready(function ($) {
       },
       error: function (MLHttpRequest, textStatus, errorThrown) {
         console.error(errorThrown);
-/*        $("#merchi-fetch-button").html("Fetch");
-        $("#merchi-fetch-button").prop("disabled", false);
-        $("#merchi-progress").val(0);
-        return;*/
       },
     });
   }
@@ -140,17 +136,7 @@ jQuery(document).ready(function ($) {
     }
   });
 
-  $("#merchi-all-products").change(function () {
-    BulkChange();
-  });
-  $("#merchi-new-products").change(function () {
-    BulkChange();
-  });
-  $("#merchi-new-data").change(function () {
-    BulkChange();
-  });
-
-  function BulkChange() {
+  $(".plugin-bulk-checkbox").change(function () {
     $('.plugin-table .merchi_checkbox').each(function (index, checkBox) {
       if($(checkBox).data('status') == 'new-product') {
         if($('#merchi-all-products').is(':checked') || $('#merchi-new-products').is(':checked')) {
@@ -177,33 +163,7 @@ jQuery(document).ready(function ($) {
         }
       }
     });
-  };
-
-  function fetchProductError(data, offset) {
-    alert(
-      "There was an error fetching products from Merchi" +
-        "Please check the console for more info."
-    );
-    console.error(data, offset);
-  }
-
-  function fetchProducts(offset) {
-    MERCHI_SDK.products.get(
-      function (data) {
-        // console.log('data', data);
-        $.merge( allProducts, data );
-        return true;
-      },
-      fetchProductError,
-      {
-        embed: embed,
-        inDomain: merchiObject.merchiStoreName,
-        limit: limit,
-        offset: offset,
-        publicOnly: true,
-      }
-    );
-  }
+  });
 
   $("#merchi-fetch-button").click(function () {
     $("#merchi-fetch-button").html("Fetching...");
@@ -230,29 +190,43 @@ jQuery(document).ready(function ($) {
   });
 
   // 
-  function prepereProducts(productTotal) {
-    available = productTotal;
+  async function prepereProducts(productTotal) {
+    var available = productTotal;
     allProducts = [];
     var offset = 0;
     var num = Math.floor(productTotal/limit) + 1;
-    console.log('num', num);
     for (j = 0; j < num; j++) {
-      // console.log('offset', offset);
-      // var fetch = fetchProducts(offset);
-      setTimeout(function() {
-        // console.log('offset', offset);
-        fetchProducts(offset);
-        // console.log('allProducts', allProducts);
+      try {
+        const data = await fetchProducts(offset);
+        allProducts = [...allProducts, ...data];
         offset += limit;
         available -= limit;
         $("#merchi-progress").val((1 - available / productTotal) * 100);
-      }, j * 1000);
+      } catch (error) {
+        console.log(error);
+      }
     }
-    setTimeout(function() {
-      console.log('allProducts', allProducts);
-      var _products = convertedMerchiProducts(allProducts);
-      selectMerchiProducts({ create: _products });
-    }, (num+1) * 1000);
+
+    var _products = convertedMerchiProducts(allProducts);
+    selectMerchiProducts({ create: _products });
+  }
+
+  function fetchProducts(offset) {
+    return new Promise((resolve,reject)=>{
+      MERCHI_SDK.products.get(
+        resolve,
+        (data, offset)=>{
+          reject(new Error("There was an error fetching products from Merchi\nPlease check the console for more info."));
+        },
+        {
+          embed: embed,
+          inDomain: merchiObject.merchiStoreName,
+          limit: limit,
+          offset: offset,
+          publicOnly: true,
+        }
+      );
+    });
   }
 
   // Show toast

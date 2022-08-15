@@ -106,6 +106,10 @@ jQuery(document).ready(function ($) {
 		if(_data != '' ) {
 			$('.plugin-table').html(_data);
 			$('.plugin-table-wrap').show();
+      setTimeout(function () {
+        $("#merchi-fetch-button").prop("disabled", false);
+        $("#merchi-progress").val(0);
+      }, 1000);
 		}
 		else {
 			$('.plugin-table-wrap').hide();

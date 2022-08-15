@@ -234,7 +234,7 @@ jQuery(document).ready(function ($) {
     // Get the snackbar DIV
     var x = document.getElementById("snackbar");
     // Set text inside snackbar DIV
-    $("#snackbar").text(totalAvailable + " Merchi products added.");
+    $("#snackbar").text(totalAvailable + " Merchi products updated.");
     // Add the "show" class to DIV
     x.className = "show";
     // After 3 seconds, remove the show class from DIV

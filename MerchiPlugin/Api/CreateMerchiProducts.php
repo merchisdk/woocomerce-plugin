@@ -105,7 +105,7 @@ class CreateMerchiProducts extends BaseController {
 			}
 			else {
 				
-				wp_send_json_error( [ 'error' => 'description must be non empty string' ] );
+				$description = '';
 			}
 
 			if (!array_key_exists( 'price', $merchi_product )) {

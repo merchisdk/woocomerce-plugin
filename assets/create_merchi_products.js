@@ -107,6 +107,7 @@ jQuery(document).ready(function ($) {
 			$('.plugin-table').html(_data);
 			$('.plugin-table-wrap').show();
       setTimeout(function () {
+        $("#merchi-fetch-button").html("Fetch");
         $("#merchi-fetch-button").prop("disabled", false);
         $("#merchi-progress").val(0);
       }, 1000);

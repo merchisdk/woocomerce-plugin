@@ -77,6 +77,10 @@ class CreateMerchiProducts extends BaseController {
 	}
 	
 	public function create_merchi_products() {
+
+		$errors = array();
+
+		$updated_products = 0;
 		
 		$data = $_POST['products'];
 		
@@ -86,123 +90,178 @@ class CreateMerchiProducts extends BaseController {
 		}
 		
 		foreach ($data['create'] as $merchi_product) {
-			
-			if (!array_key_exists( 'description', $merchi_product )) {
-					wp_send_json_error( [ 'error' => 'missing description' ] );
-			}
 
-			$description = json_decode( wp_unslash( $merchi_product['description'] ), true );
-			// update_option( 'test_description_'.random_int(1111, 9999), $description );
-			
-			if(
-				is_array( $description )
-				&& isset( $description['blocks'] )
-				&& isset( $description['blocks'][0] )
-				&& isset( $description['blocks'][0]['text'] )
-			) {
-				
-				$description = $description['blocks'][0]['text'];
-			}
-			else {
-				
-				$description = '';
-			}
-
-			if (!array_key_exists( 'price', $merchi_product )) {
-				wp_send_json_error( [ 'error' => 'missing price' ] );
-			}
-
-			$price = sanitize_textarea_field( $merchi_product['price'] );
-			
-			if (!is_string( $price ) || empty( $price )) {
-				wp_send_json_error( [ 'error' => 'price must be non empty string' ] );
-			}
-
-			if (!array_key_exists( 'name', $merchi_product )) {
-				wp_send_json_error( [ 'error' => 'missing name' ] );
-			}
-
-			$name = sanitize_textarea_field( $merchi_product['name'] );
-			
-			if (!is_string( $name ) || empty( $name )) {
-				wp_send_json_error( [ 'error' => 'name must be non empty string' ] );
-			}
-
-			if (!array_key_exists( 'regular_price', $merchi_product )) {
-				wp_send_json_error( [ 'error' => 'missing regular_price' ] );
-			}
-
-			$regular_price = sanitize_textarea_field( $merchi_product['regular_price'] );
-			
-			if (!is_string( $regular_price ) || empty( $regular_price )) {
-				wp_send_json_error( [ 'error' => 'regular_price must be non empty string' ] );
-			}
+			$error_counter = 0;
 
 			if (!array_key_exists( 'sku', $merchi_product )) {
-				wp_send_json_error( [ 'error' => 'missing sku' ] );
-			}
+
+				wp_send_json_error( [ 'error' => 'missing <strong>sku</strong>' ] );
+			} 
 
 			$sku = sanitize_textarea_field( $merchi_product['sku'] );
 
-			if (!is_string( $sku ) || empty( $sku )) {
-				wp_send_json_error( [ 'error' => 'sku must be non empty string' ] );
+			if (!array_key_exists( 'price', $merchi_product )) {
+
+				$errors[$sku]['errors'][] = 'missing <strong>price</strong>';
+				$error_counter++;
 			}
-			
-			$attachment_ids = array();
-			$thumbnail = 0;
-			
-			if(
-				isset( $merchi_product['images'] )
-				&& is_array( $merchi_product['images'] )
-				&& count( $merchi_product['images'] )
-			) {
-				
-				foreach( $merchi_product['images'] as $merchi_image ) {
-					
-					if( $attachment_id = $this->attache_image( $wc_product_id, $merchi_image['src'] ) ) {
-					
-						if( !isset( $thumbnail ) || !$thumbnail ) {
-							
-							$thumbnail = $attachment_id;
-						}
-						else {
-							
-							$attachment_ids[] = $attachment_id;
-						}
-					}
+			else {
+
+				$price = sanitize_textarea_field( $merchi_product['price'] );
+
+				if (!is_string( $price ) || empty( $price )) {
+					$errors[$sku]['errors'][] = '<strong>price</strong> must be non empty string';
+					$error_counter++;
 				}
 			}
 			
-			if( !$product_id = wc_get_product_id_by_sku( $sku ) ) {
-				
-				$wc_product = new \WC_Product_Simple();
-				$wc_product->set_sku( $sku );
+			if (!array_key_exists( 'description', $merchi_product )) {
+
+				$errors[$sku]['errors'][] = 'missing <strong>description</strong>';
+				$error_counter++;
 			}
 			else {
+
+				$description = json_decode( wp_unslash( $merchi_product['description'] ), true );
 				
-				$wc_product = new \WC_Product( $product_id );
+				if(
+					is_array( $description )
+					&& isset( $description['blocks'] )
+					&& isset( $description['blocks'][0] )
+					&& isset( $description['blocks'][0]['text'] )
+				) {
+					
+					$description = $description['blocks'][0]['text'];
+				}
+				else {
+					
+					$description = '';
+				}
 			}
-			
-			$wc_product->set_description( $description );
-			$wc_product->set_price( $price );
-			$wc_product->set_name( $name );
-			$wc_product->set_regular_price( $regular_price );
-			$wc_product->set_gallery_image_ids( $attachment_ids );
-			
-			if( isset( $thumbnail ) && $thumbnail ) {
-				
-				$wc_product->set_image_id( $thumbnail );
+
+			if (!array_key_exists( 'name', $merchi_product )) {
+
+				$errors[$sku]['errors'][] = 'missing <strong>name</strong>';
+				$error_counter++;
+				$name = '';
 			}
+			else {
+				$name = sanitize_textarea_field( $merchi_product['name'] );
+
+				if (!is_string( $name ) || empty( $name )) {
+
+					$errors[$sku]['errors'][] = '<strong>name</strong> must be non empty string';
+					$error_counter++;
+				}
+			}
+
+			if (!array_key_exists( 'regular_price', $merchi_product )) {
+
+				$errors[$sku]['errors'][] = 'missing <strong>regular_price</strong>';
+				$error_counter++;
+			}
+			else {
+
+				$regular_price = sanitize_textarea_field( $merchi_product['regular_price'] );
+
+				if (!is_string( $regular_price ) || empty( $regular_price )) {
+					$errors[$sku]['errors'][] = '<strong>regular_price</strong> must be non empty string';
+					$error_counter++;
+				}
+			}
+
+			if( $error_counter ){
+
+				$errors[$sku]['name'] = $name;
+			}
+			else {
 			
-			$wc_product_id = $wc_product->save();
-			
-			// set_post_thumbnail( $wc_product_id, $thumbnail );
-			
-			if( isset( $merchi_product['merchi_updated'] ) ) {
+				$attachment_ids = array();
+				$thumbnail = 0;
 				
-				update_post_meta( $wc_product_id, 'merchi_updated', $merchi_product['merchi_updated'] );
+				if(
+					isset( $merchi_product['images'] )
+					&& is_array( $merchi_product['images'] )
+					&& count( $merchi_product['images'] )
+				) {
+					
+					foreach( $merchi_product['images'] as $merchi_image ) {
+						
+						if( $attachment_id = $this->attache_image( $wc_product_id, $merchi_image['src'] ) ) {
+						
+							if( !isset( $thumbnail ) || !$thumbnail ) {
+								
+								$thumbnail = $attachment_id;
+							}
+							else {
+								
+								$attachment_ids[] = $attachment_id;
+							}
+						}
+					}
+				}
+				
+				if( !$product_id = wc_get_product_id_by_sku( $sku ) ) {
+					
+					$wc_product = new \WC_Product_Simple();
+					$wc_product->set_sku( $sku );
+				}
+				else {
+					
+					$wc_product = new \WC_Product( $product_id );
+				}
+				
+				$wc_product->set_description( $description );
+				$wc_product->set_price( $price );
+				$wc_product->set_name( $name );
+				$wc_product->set_regular_price( $regular_price );
+				$wc_product->set_gallery_image_ids( $attachment_ids );
+				
+				if( isset( $thumbnail ) && $thumbnail ) {
+					
+					$wc_product->set_image_id( $thumbnail );
+				}
+				
+				$wc_product_id = $wc_product->save();
+				
+				// set_post_thumbnail( $wc_product_id, $thumbnail );
+				
+				if( isset( $merchi_product['merchi_updated'] ) ) {
+					
+					update_post_meta( $wc_product_id, 'merchi_updated', $merchi_product['merchi_updated'] );
+				}
+
+				$updated_products++;
 			}
 		}
+
+		if( count( $errors ) ) {
+
+			$result['errors'] = '';
+			
+			foreach( $errors as $sku => $error ) {
+
+				$result['errors'] .= '<p class="import-error">
+					<div class="import-error-head">'
+						. $sku . ' ' . $error['name'] .
+					'</div>';
+					foreach( $error['errors'] as $line ) {
+
+						$result['errors'] .= '<div class="import-error-line">'
+							. $line .
+						'</div>';
+					}
+				$result['errors'] .= '</p>';
+			}
+		}
+		else {
+
+			$result['errors'] = false;
+		}
+
+		$result['products'] = $updated_products;
+
+		echo json_encode($result);
 		
 		wp_die();
 	}

@@ -134,3 +134,19 @@ h2 {
   border-radius: 5px;
   box-shadow: 1px 10px 20px #0000000f;
 }
+.plugin-error-list {
+  background: white;
+  width: auto;
+  padding: 1em;
+  border-radius: 5px;
+  box-shadow: 1px 10px 20px #0000000f;
+}
+.import-error-head {
+  font-size: 130%;
+  font-weight: 600;
+  color: red;
+}
+.import-error-line {
+  font-size: 110%;
+  color: red;
+}

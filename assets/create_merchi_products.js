@@ -64,6 +64,7 @@ jQuery(document).ready(function ($) {
     var msg = `Merchi products have been fetched and saved into products.`;
     $.ajax({
       type: "post",
+      dataType: 'json',
       url: create_merchi_products.ajax_url,
       data: {
         action: "create_merchi_products",
@@ -71,11 +72,21 @@ jQuery(document).ready(function ($) {
         _ajax_nonce: create_merchi_products.nonce,
       },
       success: function (_data) {
+        // console.log(_data);
         $("#merchi-fetch-button").html("Fetch");
         $("#merchi-fetch-button").prop("disabled", false);
         $("#merchi-progress").val(0);
         $("#merchi-sync-products").prop("disabled", false);
-        toast();
+        window.scrollTo( 0, 0 );
+        if(_data['products'] > 0){
+          $('.plugin-error-list').html('');
+          $('.plugin-import-errors').hide();
+          toast(_data['products']);
+        }
+        if(_data['errors']){
+          $('.plugin-import-errors').show();
+          $('.plugin-error-list').html(_data['errors']);
+        }
         return;
       },
       error: function (MLHttpRequest, textStatus, errorThrown) {
@@ -132,6 +143,21 @@ jQuery(document).ready(function ($) {
     });
     $(merchiProducts.create).each(function (index, product) {
       if($.inArray(product['sku'], skus) !== -1) {
+        ////////////////////////////////////////////////////////////////////
+        // if( index == 0 ){
+        //   product['name'] = '';
+        // }
+        // if( index == 1 ){
+        //   product['price'] = '';
+        // }
+        // if( index == 2 ){
+        //   product['regular_price'] = '';
+        // }
+        // if( index == 3 ){
+        //   product['regular_price'] = '';
+        //   product['name'] = '';
+        // }
+        /////////////////////////////////////////////////////////////////////
         products.push(product);
       }
     });
@@ -177,6 +203,8 @@ jQuery(document).ready(function ($) {
     $("#merchi-new-products").prop('checked', false);
     $("#merchi-new-data").prop('checked', false);
     $(".merchi_checkbox").prop('checked', false);
+    $('.plugin-error-list').html('');
+    $('.plugin-import-errors').hide();
     // Check how many merchi product there are
     MERCHI_SDK.products.get(
       function (data) {
@@ -235,11 +263,11 @@ jQuery(document).ready(function ($) {
   }
 
   // Show toast
-  function toast() {
+  function toast($products) {
     // Get the snackbar DIV
     var x = document.getElementById("snackbar");
     // Set text inside snackbar DIV
-    $("#snackbar").text(totalAvailable + " Merchi products updated.");
+    $("#snackbar").text($products + " Merchi products created/updated.");
     // Add the "show" class to DIV
     x.className = "show";
     // After 3 seconds, remove the show class from DIV

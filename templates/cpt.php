@@ -24,6 +24,10 @@
       </button>
     </div>
 </div>
+<div class="wrap plugin-import-errors" style="display: none;">
+  <div class="plugin-error-list">
+  </div>
+</div>
 <div class="wrap plugin-table-wrap" style="display: none;">
   <div class="plugin-products">
 		<table class="plugin-table">

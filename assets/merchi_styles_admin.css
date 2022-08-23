@@ -135,18 +135,20 @@ h2 {
   box-shadow: 1px 10px 20px #0000000f;
 }
 .plugin-error-list {
-  background: white;
-  width: auto;
-  padding: 1em;
+  padding: 0.25rem 1rem;
   border-radius: 5px;
   box-shadow: 1px 10px 20px #0000000f;
+  border: 2px solid #ff5353;
+  background: white;
 }
 .import-error-head {
-  font-size: 130%;
+  font-size: 14px;
   font-weight: 600;
-  color: red;
+  padding: 0.5rem 0;
 }
 .import-error-line {
-  font-size: 110%;
-  color: red;
+  font-size: 13px;
+}
+.import-error-head:nth-child(odd) {
+  border-top: 2px solid #ff5353;
 }

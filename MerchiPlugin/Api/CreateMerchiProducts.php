@@ -250,7 +250,7 @@ class CreateMerchiProducts extends BaseController {
 
 				$result['errors'] .= '<p class="import-error">
 					<div class="import-error-head">'
-						. $sku . ' ' . $error['name'] .
+						. 'Product: ' . $sku . ' ' . $error['name'] .
 					'</div>';
 					foreach( $error['errors'] as $line ) {
 

@@ -3,7 +3,7 @@
  * Plugin Name:       Merchi Plugin
  * Plugin URI:        https://merchi.co
  * Description:       Fetch your products from Merchi. This plugin requires Woocommerce.
- * Version:           1.3.2
+ * Version:           1.4.0
  * Author:            Charlie Campton
  * License:           GPL v2 or later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
@@ -53,3 +53,15 @@ if (class_exists( 'MerchiPlugin\\Init' )) {
 // Deactivate purchasing on woocommerce.
 add_filter( 'woocommerce_widget_cart_is_hidden', '__return_true' );
 add_filter( 'woocommerce_is_purchasable', '__return_false' );
+
+// Add mount point Class module shortcode
+add_shortcode( 'merchi_mount_point', 'merchi_mount_point' );
+function merchi_mount_point() {
+	
+	$merchi_mount_point_id = get_option( 'merchi_mount_point_id' );
+	if( $merchi_mount_point_id != '' ) {
+		
+		echo '<div class="' . $merchi_mount_point_id . '">
+		</div>';
+	}
+}

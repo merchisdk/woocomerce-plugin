@@ -5,8 +5,8 @@
 namespace MerchiPlugin\Api;
 
 use \MerchiPlugin\Base\BaseController;
-use Automattic\WooCommerce\Client;
-use Automattic\WooCommerce\HttpClient\HttpClientException;
+// use Automattic\WooCommerce\Client;
+// use Automattic\WooCommerce\HttpClient\HttpClientException;
 
 function product_to_json($product) {
   $images = [];
@@ -34,25 +34,35 @@ class ExportProducts extends BaseController {
 	}
 
 	public function export_products() {
-                $options = ['limit' => -1];
-                $products = wc_get_products($options);
-                $product_data = [];
-                foreach ($products as $product) {
-                  array_push($product_data, product_to_json($product));
-                }
-                $result = ['products' => $product_data];
-                $api_secret = esc_attr( get_option( 'merchi_api_secret' ) );
-                $args = ['body' => ['data' => json_encode($result),
-                                    'api_secret' => $api_secret]];
-                $merchi_url = 'https://api.merchi.co/v6/domains/import/woocommerce/';
-                $response = wp_remote_post($merchi_url, $args);
-                $status = wp_remote_retrieve_response_code($response);
-                $body = wp_remote_retrieve_body( $response );
-                if ($status == 201) {
-                  echo "Exported all products!";
-                } else {
-                  echo "Server error: " . $body;
-                }
+    $options = ['limit' => -1];
+    $products = wc_get_products($options);
+    $product_data = [];
+    foreach ($products as $product) {
+      array_push($product_data, product_to_json($product));
+    }
+    $result = ['products' => $product_data];
+    if( get_option( 'merchi_staging_mode' ) == 'yes' ) {
+      $api_secret = esc_attr( get_option( 'staging_merchi_api_secret' ) );
+      $merchi_url = 'https://api.staging.merchi.co/v6/domains/import/woocommerce/';
+    }
+    else {
+      $api_secret = esc_attr( get_option( 'merchi_api_secret' ) );
+      $merchi_url = 'https://api.merchi.co/v6/domains/import/woocommerce/';
+    }
+    $args = [
+      'body' => [
+        'data' => json_encode($result),
+        'api_secret' => $api_secret
+      ]
+    ];
+    $response = wp_remote_post($merchi_url, $args);
+    $status = wp_remote_retrieve_response_code($response);
+    $body = wp_remote_retrieve_body( $response );
+    if ($status == 201) {
+      echo "Exported all products!";
+    } else {
+      echo "Server error: " . $body;
+    }
 		wp_die();
 	}
 }

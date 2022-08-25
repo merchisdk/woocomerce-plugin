@@ -93,13 +93,29 @@ class Admin extends BaseController {
 			 ],
 			 [
 				 'option_group' => 'merchi_options_group',
+				 'option_name'  => 'staging_merchi_url',
+				 'callback'     => [
+					 $this->callbacks,
+					 'stagingMerchiOptionsGroup',
+				 ],
+			 ],
+			 [
+				 'option_group' => 'merchi_options_group',
+				 'option_name'  => 'staging_merchi_api_secret',
+				 'callback'     => [
+					 $this->callbacks,
+					 'stagingMerchiOptionsGroup',
+				 ],
+			 ],
+			 [
+				 'option_group' => 'merchi_options_group',
 				 'option_name'  => 'merchi_mount_point_id',
 				 'callback'     => [
 					 $this->callbacks,
 					 'merchiOptionsGroup',
 				 ],
 			 ],
-                         [
+             [
 				 'option_group' => 'merchi_options_group',
 				 'option_name'  => 'merchi_redirect_url',
 				 'callback'     => [
@@ -107,17 +123,25 @@ class Admin extends BaseController {
 					 'merchiOptionsGroup',
 				 ],
 			 ],
+			 // [
+				 // 'option_group' => 'merchi_options_group',
+				 // 'option_name'  => 'woo_k_s',
+				 // 'callback'     => [
+					 // $this->callbacks,
+					 // 'merchiOptionsGroup',
+				 // ],
+			 // ],
+			 // [
+				 // 'option_group' => 'merchi_options_group',
+				 // 'option_name'  => 'woo_k_p',
+				 // 'callback'     => [
+					 // $this->callbacks,
+					 // 'merchiOptionsGroup',
+				 // ],
+			 // ],
 			 [
 				 'option_group' => 'merchi_options_group',
-				 'option_name'  => 'woo_k_s',
-				 'callback'     => [
-					 $this->callbacks,
-					 'merchiOptionsGroup',
-				 ],
-			 ],
-			 [
-				 'option_group' => 'merchi_options_group',
-				 'option_name'  => 'woo_k_p',
+				 'option_name'  => 'merchi_staging_mode',
 				 'callback'     => [
 					 $this->callbacks,
 					 'merchiOptionsGroup',
@@ -177,6 +201,34 @@ class Admin extends BaseController {
 				],
 			],
 			[
+				'id'       => 'staging_merchi_url',
+				'title'    => 'Staging Merchi URL',
+				'callback' => [
+					$this->callbacks,
+					'stagingMerchiStoreUrl',
+				],
+				'page'     => 'merchi_plugin',
+				'section'  => 'merchi_admin_index',
+				'args'     => [
+					'label_for' => 'staging_merchi_url',
+					'class'     => 'example-class',
+				],
+			],
+                        [
+				'id'       => 'staging_merchi_api_secret',
+				'title'    => 'Staging Merchi API secret',
+				'callback' => [
+					$this->callbacks,
+					'stagingMerchiApiSecret',
+				],
+				'page'     => 'merchi_plugin',
+				'section'  => 'merchi_admin_index',
+				'args'     => [
+					'label_for' => 'staging_merchi_api_secret',
+					'class'     => 'example-class',
+				],
+			],
+			[
 				'id'       => 'merchi_mount_point_id',
 				'title'    => 'Mount point class',
 				'callback' => [
@@ -204,31 +256,45 @@ class Admin extends BaseController {
 					'class'     => 'example-class',
 				],
 			],
+			// [
+				// 'id'       => 'woo_k_p',
+				// 'title'    => 'Woocommerce Public Key',
+				// 'callback' => [
+					// $this->callbacks,
+					// 'wooPublic',
+				// ],
+				// 'page'     => 'merchi_plugin',
+				// 'section'  => 'merchi_admin_index',
+				// 'args'     => [
+					// 'label_for' => 'woo_k_p',
+					// 'class'     => 'example-class',
+				// ],
+			// ],
+			// [
+				// 'id'       => 'woo_k_s',
+				// 'title'    => 'Woocommerce Secret Key',
+				// 'callback' => [
+					// $this->callbacks,
+					// 'wooSecret',
+				// ],
+				// 'page'     => 'merchi_plugin',
+				// 'section'  => 'merchi_admin_index',
+				// 'args'     => [
+					// 'label_for' => 'woo_k_s',
+					// 'class'     => 'example-class',
+				// ],
+			// ],
 			[
-				'id'       => 'woo_k_p',
-				'title'    => 'Woocommerce Public Key',
+				'id'       => 'merchi_staging_mode',
+				'title'    => 'Environment',
 				'callback' => [
 					$this->callbacks,
-					'wooPublic',
+					'merchiStagingMode'
 				],
 				'page'     => 'merchi_plugin',
 				'section'  => 'merchi_admin_index',
 				'args'     => [
-					'label_for' => 'woo_k_p',
-					'class'     => 'example-class',
-				],
-			],
-			[
-				'id'       => 'woo_k_s',
-				'title'    => 'Woocommerce Secret Key',
-				'callback' => [
-					$this->callbacks,
-					'wooSecret',
-				],
-				'page'     => 'merchi_plugin',
-				'section'  => 'merchi_admin_index',
-				'args'     => [
-					'label_for' => 'woo_k_s',
+					'label_for' => 'merchi_staging_mode',
 					'class'     => 'example-class',
 				],
 			],

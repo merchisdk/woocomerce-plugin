@@ -1,6 +1,7 @@
 jQuery(document).ready(function ($) {
-  var available = 0;
+  var limit = 25;
   var totalAvailable = 0;
+  var allProducts = [];
   var embed = {
     featureImage: {},
     images: {},
@@ -11,9 +12,10 @@ jQuery(document).ready(function ($) {
     "image/jpg": "jpg",
     "image/png": "png",
   };
+  
   function downloadMerchiImageReturnData(file) {
     var mimetype = file.mimetype() ? file.mimetype() : null,
-      downloadSrc = "https://api.merchi.co/v6/product-public-file/download/",
+      downloadSrc = $('#merchi_base_url').length ? $('#merchi_base_url').val() + "v6/product-public-file/download/" : "https://api.merchi.co/v6/product-public-file/download/",
       extension = mimetype ? allowedExtensions[mimetype] : null;
     return extension
       ? { src: `${downloadSrc}${file.id()}.${extension}` }
@@ -30,7 +32,7 @@ jQuery(document).ready(function ($) {
     var _products = [],
       i,
       j,
-      arraySize = 6,
+      arraySize = limit,
       arrayOfProductArrays = [];
     if (products) {
       for (i = 0; i < products.length; i++) {
@@ -38,6 +40,7 @@ jQuery(document).ready(function ($) {
           merchiProductImages;
         if (merchiProduct.json && merchiProduct.json === "product") {
           merchiProductImages = convertMerchiProductImages(merchiProduct);
+		  // console.log(merchiProductImages);
           _products.push({
             description: merchiProduct.description(),
             price: merchiProduct.unitPrice(),
@@ -45,6 +48,7 @@ jQuery(document).ready(function ($) {
             regular_price: merchiProduct.unitPrice(),
             images: merchiProductImages,
             sku: merchiProduct.id(),
+			      merchi_updated: merchiProduct.updated(),
           });
         }
       }
@@ -55,10 +59,12 @@ jQuery(document).ready(function ($) {
     return _products;
   }
 
-  function injectProductsIntoDB(products, offset) {
+  function injectProductsIntoDB(products) {
+    $("#merchi-sync-products").prop("disabled", true);
     var msg = `Merchi products have been fetched and saved into products.`;
     $.ajax({
       type: "post",
+      dataType: 'json',
       url: create_merchi_products.ajax_url,
       data: {
         action: "create_merchi_products",
@@ -67,17 +73,19 @@ jQuery(document).ready(function ($) {
       },
       success: function (_data) {
         // console.log(_data);
-        available -= 6;
-        // console.log("available", available);
-        $("#merchi-progress").val((1 - available / totalAvailable) * 100);
-        // console.log("total available:", totalAvailable);
-        if (available > 0) {
-          fetchProducts(offset + 6);
-        } else {
-          $("#merchi-fetch-button").html("Fetch");
-          $("#merchi-fetch-button").prop("disabled", false);
-          $("#merchi-progress").val(0);
-          toast();
+        $("#merchi-fetch-button").html("Fetch");
+        $("#merchi-fetch-button").prop("disabled", false);
+        $("#merchi-progress").val(0);
+        $("#merchi-sync-products").prop("disabled", false);
+        window.scrollTo( 0, 0 );
+        if(_data['products'] > 0){
+          $('.plugin-error-list').html('');
+          $('.plugin-import-errors').hide();
+          toast(_data['products']);
+        }
+        if(_data['errors']){
+          $('.plugin-import-errors').show();
+          $('.plugin-error-list').html(_data['errors']);
         }
         return;
       },
@@ -86,55 +94,121 @@ jQuery(document).ready(function ($) {
         $("#merchi-fetch-button").html("Fetch");
         $("#merchi-fetch-button").prop("disabled", false);
         $("#merchi-progress").val(0);
+        $("#merchi-sync-products").prop("disabled", false);
         return;
       },
     });
   }
-
-  async function addProductsToDatabase(data, offset) {
-    // on fetch merchi products success pass them to the
-    // "create_merchi_products" endpoint so that they can be saved
-    // into the products table
-    var _products = await convertedMerchiProducts(data);
-    injectProductsIntoDB({ create: _products }, offset);
-  }
-
-  function fetchProductError(data, offset) {
-    alert(
-      "There was an error fetching products from Merchi" +
-        "Please check the console for more info."
-    );
-    console.error(data, offset);
-  }
-
-  function fetchProducts(offset) {
-    var limit = 6;
-    MERCHI_SDK.products.get(
-      function (data) {
-        // console.log(data);
-        addProductsToDatabase(data, offset);
+  
+  var merchiProducts = [];
+  function selectMerchiProducts(products) {
+    var msg = `Merchi products have been fetched and saved into products.`;
+	  merchiProducts = products;
+    $.ajax({
+      type: "post",
+      url: create_merchi_products.ajax_url,
+      data: {
+        action: "select_merchi_products",
+        products: products,
+        _ajax_nonce: create_merchi_products.nonce,
       },
-      fetchProductError,
-      {
-        embed: embed,
-        inDomain: merchiObject.merchiStoreName,
-        limit: limit,
-        offset: offset,
-        publicOnly: true,
-      }
-    );
+      success: function (_data) {
+        // console.log(_data);
+		if(_data != '' ) {
+			$('.plugin-table').html(_data);
+			$('.plugin-table-wrap').show();
+      setTimeout(function () {
+        $("#merchi-fetch-button").html("Fetch");
+        $("#merchi-fetch-button").prop("disabled", false);
+        $("#merchi-progress").val(0);
+      }, 1000);
+		}
+		else {
+			$('.plugin-table-wrap').hide();
+		}
+      },
+      error: function (MLHttpRequest, textStatus, errorThrown) {
+        console.error(errorThrown);
+      },
+    });
   }
+  
+  $("#merchi-sync-products").click(function () {
+    var skus = [];
+    var products = [];
+    $('.plugin-table .merchi_checkbox').each(function (index, checkBox) {
+      if($(checkBox).is(':checked')) {
+        skus.push($(checkBox).data('sku'));
+      }
+    });
+    $(merchiProducts.create).each(function (index, product) {
+      if($.inArray(product['sku'], skus) !== -1) {
+        ////////////////////////////////////////////////////////////////////
+        // if( index == 0 ){
+        //   product['name'] = '';
+        // }
+        // if( index == 1 ){
+        //   product['price'] = '';
+        // }
+        // if( index == 2 ){
+        //   product['regular_price'] = '';
+        // }
+        // if( index == 3 ){
+        //   product['regular_price'] = '';
+        //   product['name'] = '';
+        // }
+        /////////////////////////////////////////////////////////////////////
+        products.push(product);
+      }
+    });
+    totalAvailable = products.length;
+    if( products.length > 0 ) {
+      injectProductsIntoDB({ create: products });
+    }
+  });
+
+  $(".plugin-bulk-checkbox").change(function () {
+    $('.plugin-table .merchi_checkbox').each(function (index, checkBox) {
+      if($(checkBox).data('status') == 'new-product') {
+        if($('#merchi-all-products').is(':checked') || $('#merchi-new-products').is(':checked')) {
+          $(checkBox).prop('checked', true);
+        }
+        else {
+          $(checkBox).prop('checked', false);
+        }
+      }
+      if($(checkBox).data('status') == 'new-data') {
+        if($('#merchi-all-products').is(':checked') || $('#merchi-new-data').is(':checked')) {
+          $(checkBox).prop('checked', true);
+        }
+        else {
+          $(checkBox).prop('checked', false);
+        }
+      }
+      if($(checkBox).data('status') == 'up-to-date') {
+        if($('#merchi-all-products').is(':checked')) {
+          $(checkBox).prop('checked', true);
+        }
+        else {
+          $(checkBox).prop('checked', false);
+        }
+      }
+    });
+  });
 
   $("#merchi-fetch-button").click(function () {
     $("#merchi-fetch-button").html("Fetching...");
     $("#merchi-fetch-button").prop("disabled", true);
+    $("#merchi-all-products").prop('checked', false);
+    $("#merchi-new-products").prop('checked', false);
+    $("#merchi-new-data").prop('checked', false);
+    $(".merchi_checkbox").prop('checked', false);
+    $('.plugin-error-list').html('');
+    $('.plugin-import-errors').hide();
     // Check how many merchi product there are
     MERCHI_SDK.products.get(
       function (data) {
-        // console.log(data, " in first");
-        available = data.meta.available;
-        totalAvailable = data.meta.available;
-        fetchProducts(0);
+        prepereProducts(data.meta.available);
       },
       function (status, data) {
         console.error(status, data);
@@ -148,12 +222,52 @@ jQuery(document).ready(function ($) {
     );
   });
 
+  // 
+  async function prepereProducts(productTotal) {
+    var available = productTotal;
+    allProducts = [];
+    var offset = 0;
+    var num = Math.floor(productTotal/limit) + 1;
+    for (j = 0; j < num; j++) {
+      try {
+        const data = await fetchProducts(offset);
+        allProducts = [...allProducts, ...data];
+        offset += limit;
+        available -= limit;
+        $("#merchi-progress").val((1 - available / productTotal) * 100);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    var _products = convertedMerchiProducts(allProducts);
+    selectMerchiProducts({ create: _products });
+  }
+
+  function fetchProducts(offset) {
+    return new Promise((resolve,reject)=>{
+      MERCHI_SDK.products.get(
+        resolve,
+        (data, offset)=>{
+          reject(new Error("There was an error fetching products from Merchi\nPlease check the console for more info."));
+        },
+        {
+          embed: embed,
+          inDomain: merchiObject.merchiStoreName,
+          limit: limit,
+          offset: offset,
+          publicOnly: true,
+        }
+      );
+    });
+  }
+
   // Show toast
-  function toast() {
+  function toast($products) {
     // Get the snackbar DIV
     var x = document.getElementById("snackbar");
     // Set text inside snackbar DIV
-    $("#snackbar").text(totalAvailable + " Merchi products added.");
+    $("#snackbar").text($products + " Merchi products created/updated.");
     // Add the "show" class to DIV
     x.className = "show";
     // After 3 seconds, remove the show class from DIV

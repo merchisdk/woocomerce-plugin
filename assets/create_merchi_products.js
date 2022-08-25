@@ -106,6 +106,7 @@ jQuery(document).ready(function ($) {
 	  merchiProducts = products;
     $.ajax({
       type: "post",
+      dataType: 'json',
       url: create_merchi_products.ajax_url,
       data: {
         action: "select_merchi_products",
@@ -114,18 +115,21 @@ jQuery(document).ready(function ($) {
       },
       success: function (_data) {
         // console.log(_data);
-		if(_data != '' ) {
-			$('.plugin-table').html(_data);
-			$('.plugin-table-wrap').show();
-      setTimeout(function () {
-        $("#merchi-fetch-button").html("Fetch");
-        $("#merchi-fetch-button").prop("disabled", false);
-        $("#merchi-progress").val(0);
-      }, 1000);
-		}
-		else {
-			$('.plugin-table-wrap').hide();
-		}
+        if(_data['table_content']) {
+          $('.plugin-table').html(_data['table_content']);
+          $('.plugin-table-wrap').show();
+          setTimeout(function () {
+            $("#merchi-fetch-button").html("Fetch");
+            $("#merchi-fetch-button").prop("disabled", false);
+            $("#merchi-progress").val(0);
+          }, 1000);
+        }
+        if(_data['errors']) {
+          $('.plugin-import-errors').show();
+          $('.plugin-error-list').html(_data['errors']);
+          $("#merchi-fetch-button").prop("disabled", false);
+          $('.plugin-table-wrap').hide();
+        }
       },
       error: function (MLHttpRequest, textStatus, errorThrown) {
         console.error(errorThrown);
@@ -236,7 +240,7 @@ jQuery(document).ready(function ($) {
         available -= limit;
         $("#merchi-progress").val((1 - available / productTotal) * 100);
       } catch (error) {
-        console.log(error);
+        // console.log(error);
       }
     }
 

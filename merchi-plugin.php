@@ -54,6 +54,25 @@ if (class_exists( 'MerchiPlugin\\Init' )) {
 add_filter( 'woocommerce_widget_cart_is_hidden', '__return_true' );
 add_filter( 'woocommerce_is_purchasable', '__return_false' );
 
+// Add live or Mergi URL to the footer
+add_action( 'wp_footer', 'add_merchi_url' );
+add_action( 'admin_footer', 'add_merchi_url' );
+function add_merchi_url() {
+	
+	echo '<input type="hidden" id="plugin_merchi_url" value ="';
+	
+	if( get_option( 'merchi_staging_mode' ) == 'yes' ) {
+
+		echo 'https://staging.merchi.co';
+	}
+	else {
+
+		echo 'https://merchi.co';
+	}
+
+	echo '">';
+}
+
 // Add mount point Class module shortcode
 add_shortcode( 'merchi_mount_point', 'merchi_mount_point' );
 function merchi_mount_point() {

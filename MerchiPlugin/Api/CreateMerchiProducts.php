@@ -66,13 +66,20 @@ class CreateMerchiProducts extends BaseController {
 					</tr>';
 				}
 			}
+
+			$result['table_content'] = $table_content;
 		}
 		else {
 			
-			$table_content = '';
+			$result['errors'] = '<p class="import-error">
+				<div class="import-error-head">
+					There are no Merchi products in your Merchi store.
+				</div>
+			</p>';
 		}
 		
-		echo $table_content;
+		echo json_encode($result);
+
 		die();
 	}
 	

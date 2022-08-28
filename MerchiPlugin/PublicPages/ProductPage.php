@@ -32,6 +32,8 @@ class ProductPage extends BaseController {
                                 'redirectAfterSuccessUrl' => $redirectUrl
 			];
 			wp_localize_script( 'show_merchi_product', 'merchiShowProductScriptOptions', $script_data );
+			// $content = '<script type="text/javascript" data-name="product-embed" src="https://merchi.co//static/product_embed/js/product.embed.js?product=' . $id . '&hidePreview=true&hideTitle=true&hideInfo=true&hidePrice=true&includeBootstrap=false&singleColumn=true"></script>';
+            // echo $content;
 		} else {
 			echo 'Merchi product not found.';
 		}

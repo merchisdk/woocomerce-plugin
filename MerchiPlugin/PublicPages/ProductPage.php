@@ -23,8 +23,9 @@ class ProductPage extends BaseController {
 		// SKU used as Merchi ID. We are checking to see if Merchi ID exists. If so fetch Merchi product.
 		if ($product->get_sku() !== '') {
 			$id        = $product->get_sku();
-			// $container = 'product-' . strval( $product->get_id() );
+			$container = 'product-' . strval( $product->get_id() );
             $redirectUrl = esc_attr( get_option( 'merchi_redirect_url' ) );
+			
 			// wp_enqueue_script( 'show_merchi_product', $this->plugin_url . 'assets/show_product.js' );
 			// $script_data = [
 			// 	'mountPointId' => $container,
@@ -32,7 +33,17 @@ class ProductPage extends BaseController {
             //                     'redirectAfterSuccessUrl' => $redirectUrl
 			// ];
 			// wp_localize_script( 'show_merchi_product', 'merchiShowProductScriptOptions', $script_data );
-			$content = '<script type="text/javascript" data-name="product-embed" src="https://staging.merchi.co//static/product_embed/js/product.embed.js?product=' . $id . '&hidePreview=true&hideTitle=true&hideInfo=true&hidePrice=true&includeBootstrap=true&singleColumn=true&redirectAfterSuccessUrl=' . $redirectUrl . '"></script>';
+
+			if( get_option( 'merchi_staging_mode' ) == 'yes' ) {
+
+				$url = 'https://staging.merchi.co';
+			}
+			else {
+				
+				$url = 'https://merchi.co';
+			}
+				
+			$content = '<script type="text/javascript" data-name="product-embed" src="' . $url . '/static/product_embed/js/product.embed.js?product=' . $id . '&hidePreview=true&hideTitle=true&hideInfo=true&hidePrice=true&includeBootstrap=true&singleColumn=true&redirectAfterSuccessUrl=' . $redirectUrl . '"></script>';
             echo $content;
 		} else {
 			echo 'Merchi product not found.';

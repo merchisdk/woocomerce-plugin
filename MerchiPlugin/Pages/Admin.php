@@ -123,6 +123,14 @@ class Admin extends BaseController {
 					 'merchiOptionsGroup',
 				 ],
 			 ],
+			 [
+				'option_group' => 'merchi_options_group',
+				'option_name'  => 'merchi_redirect_url_quote',
+				'callback'     => [
+					$this->callbacks,
+					'merchiOptionsGroup',
+				],
+			],
 			 // [
 				 // 'option_group' => 'merchi_options_group',
 				 // 'option_name'  => 'woo_k_s',
@@ -253,6 +261,20 @@ class Admin extends BaseController {
 				'section'  => 'merchi_admin_index',
 				'args'     => [
 					'label_for' => 'merchi_redirect_url',
+					'class'     => 'example-class',
+				],
+			],
+			[
+				'id'       => 'merchi_redirect_url_quote',
+				'title'    => 'Redirect After Success URL for quote',
+				'callback' => [
+					$this->callbacks,
+					'merchiRedirectURLQuote'
+				],
+				'page'     => 'merchi_plugin',
+				'section'  => 'merchi_admin_index',
+				'args'     => [
+					'label_for' => 'merchi_redirect_url_quote',
 					'class'     => 'example-class',
 				],
 			],

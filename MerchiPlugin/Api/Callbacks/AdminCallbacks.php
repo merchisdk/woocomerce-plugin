@@ -78,6 +78,11 @@ class AdminCallbacks extends BaseController {
 		echo '<input type="text" class="regular-text" name="merchi_redirect_url" value="' . $value . '" placeholder="https://example.com/success">';
 	}
 
+	public function merchiRedirectURLQuote() {
+		$value = esc_attr( get_option( 'merchi_redirect_url_quote' ) );
+		echo '<input type="text" class="regular-text" name="merchi_redirect_url_quote" value="' . $value . '" placeholder="https://example.com/quote-success">';
+	}
+
 	public function merchiStagingMode() {
 		$value = esc_attr( get_option( 'merchi_staging_mode' ) );
 		// echo '<input type="checkbox" name="merchi_staging_mode" value="yes" ' . checked( $value, "yes", false ) . '><span style="margin-left: 10px;">Staging/Prodaction</span>';

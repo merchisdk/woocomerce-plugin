@@ -25,6 +25,7 @@ class ProductPage extends BaseController {
 			$id        = $product->get_sku();
 			$container = 'product-' . strval( $product->get_id() );
             $redirectUrl = esc_attr( get_option( 'merchi_redirect_url' ) );
+			$redirectUrlQuote = esc_attr( get_option( 'merchi_redirect_url_quote' ) );
 			
 			// wp_enqueue_script( 'show_merchi_product', $this->plugin_url . 'assets/show_product.js' );
 			// $script_data = [
@@ -43,7 +44,7 @@ class ProductPage extends BaseController {
 				$url = 'https://merchi.co';
 			}
 				
-			$content = '<script type="text/javascript" data-name="product-embed" src="' . $url . '/static/product_embed/js/product.embed.js?product=' . $id . '&hidePreview=true&hideTitle=true&hideInfo=true&hidePrice=true&includeBootstrap=true&singleColumn=true&redirectAfterSuccessUrl=' . $redirectUrl . '"></script>';
+			$content = '<script type="text/javascript" data-name="product-embed" src="' . $url . '/static/product_embed/js/product.embed.js?product=' . $id . '&hidePreview=true&hideTitle=true&hideInfo=true&hidePrice=true&includeBootstrap=true&singleColumn=true&redirectAfterQuoteSuccessUrl=' . $redirectUrlQuote . '&redirectAfterSuccessUrl=' . $redirectUrl . '"></script>';
             echo $content;
 		} else {
 			echo 'Merchi product not found.';
